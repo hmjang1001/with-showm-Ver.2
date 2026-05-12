@@ -1,0 +1,3098 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WITH showM — 커리어를 소유하라</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#fff; --bg2:#f8f7f5; --bg3:#f2f0ed;
+  --card:#fff; --border:#e8e6e1; --border2:#d8d5cf;
+  --showm:#F26522; --showm-dim:#d4541a; --showm-light:#fff4ee; --showm-glow:rgba(242,101,34,0.15);
+  --black:#111; --text:#333; --muted:#888; --muted2:#bbb;
+  --green:#16a34a; --green-bg:#f0fdf4;
+  --red:#dc2626; --red-bg:#fef2f2;
+  --amber:#d97706; --amber-bg:#fffbeb;
+  --blue:#2563eb; --blue-bg:#eff6ff;
+  --purple:#7c3aed; --purple-bg:#f5f3ff;
+  --fb:'Noto Sans KR',sans-serif;
+  --fd:'Bebas Neue',sans-serif;
+  --fm:'DM Mono',monospace;
+  --r:14px; --r2:8px;
+  --sh:0 4px 24px rgba(0,0,0,.08);
+  --sh2:0 1px 4px rgba(0,0,0,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;}
+
+/* ── 버튼 ── */
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:var(--r2);padding:11px 24px;font-size:13px;font-weight:700;font-family:var(--fb);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.btn-p{background:var(--showm);color:#fff;}
+.btn-p:hover{background:var(--showm-dim);transform:translateY(-1px);box-shadow:0 6px 20px var(--showm-glow);}
+.btn-g{background:transparent;color:var(--text);border:1.5px solid var(--border2);}
+.btn-g:hover{border-color:var(--showm);color:var(--showm);}
+.btn-o{background:transparent;color:var(--showm);border:1.5px solid var(--showm);}
+.btn-o:hover{background:var(--showm-light);}
+.btn-w{background:#fff;color:var(--showm);}
+.btn-t{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.45);}
+.btn-full{width:100%;justify-content:center;}
+.btn-sm{padding:5px 12px;font-size:11px;}
+.btn-md{padding:9px 20px;font-size:13px;}
+.btn-lg{padding:14px 32px;font-size:15px;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;box-shadow:var(--sh2);}
+.nav-logo{font-family:var(--fd);font-size:24px;letter-spacing:.1em;color:var(--black);cursor:pointer;text-decoration:none;}
+.nav-logo span{color:var(--showm);}
+.nav-links{display:flex;gap:2px;list-style:none;}
+.nav-link{font-size:13px;color:var(--muted);padding:7px 16px;border-radius:8px;cursor:pointer;border:none;background:transparent;font-family:var(--fb);font-weight:500;transition:all .15s;}
+.nav-link:hover,.nav-link.active{color:var(--showm);background:var(--showm-light);}
+.nav-actions{display:flex;gap:8px;align-items:center;}
+
+/* ── 뱃지 ── */
+.bdg{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;font-family:var(--fm);letter-spacing:.04em;}
+.bdg-or{background:var(--showm-light);color:var(--showm);}
+.bdg-gn{background:var(--green-bg);color:var(--green);}
+.bdg-rd{background:var(--red-bg);color:var(--red);}
+.bdg-am{background:var(--amber-bg);color:var(--amber);}
+.bdg-bl{background:var(--blue-bg);color:var(--blue);}
+.bdg-pu{background:var(--purple-bg);color:var(--purple);}
+.bdg-gy{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+
+/* ── 카드 ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);transition:border-color .2s,box-shadow .2s,transform .2s;}
+.card-hv:hover{border-color:var(--border2);box-shadow:var(--sh);transform:translateY(-2px);}
+
+/* ── 태그 ── */
+.tag{font-family:var(--fm);font-size:11px;padding:4px 10px;border-radius:5px;background:var(--bg2);color:var(--text);border:1px solid var(--border);}
+
+/* ── 인풋 ── */
+.inp{width:100%;padding:11px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r2);font-size:13px;font-family:var(--fb);color:var(--text);outline:none;transition:all .2s;}
+.inp:focus{border-color:var(--showm);background:var(--bg);box-shadow:0 0 0 3px var(--showm-glow);}
+.inp::placeholder{color:var(--muted2);}
+select.inp{cursor:pointer;}
+textarea.inp{resize:vertical;min-height:100px;line-height:1.6;}
+.lbl{display:block;font-size:12px;font-weight:700;color:#222;margin-bottom:7px;}
+.lbl .req{color:var(--red);margin-left:3px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-g{margin-bottom:14px;}
+
+/* ── 페이지 ── */
+.page{display:none;min-height:100vh;padding-top:64px;}
+.page.active{display:block;}
+
+/* ── 레이아웃 ── */
+.wrap{max-width:1140px;margin:0 auto;padding:0 48px;}
+.wrap-lg{max-width:1200px;margin:0 auto;padding:0 48px;}
+.section{padding:80px 0;}
+
+/* ── 히어로 ── */
+.hero{padding:140px 48px 100px;background:linear-gradient(150deg,#fff 0%,#fff8f3 55%,#fff2ea 100%);position:relative;overflow:hidden;}
+.hero-deco1{position:absolute;right:-100px;top:-100px;width:560px;height:560px;border-radius:50%;background:var(--showm);opacity:.07;pointer-events:none;}
+.hero-deco2{position:absolute;right:120px;bottom:-180px;width:360px;height:360px;border-radius:50%;background:var(--showm);opacity:.04;pointer-events:none;}
+.hero-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;background:var(--showm-light);border:1px solid rgba(242,101,34,.25);margin-bottom:28px;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--showm);animation:pulse 1.5s infinite;}
+.hero-badge-txt{font-size:11px;color:var(--showm);font-family:var(--fm);font-weight:700;}
+.hero-h1{font-family:var(--fd);font-size:clamp(54px,7vw,88px);letter-spacing:.03em;line-height:1.0;color:var(--black);margin-bottom:20px;}
+.hero-h1 span{color:var(--showm);}
+.hero-sub1{font-size:18px;color:var(--muted);line-height:1.7;margin-bottom:10px;}
+.hero-sub2{font-size:13px;color:var(--muted2);line-height:1.8;margin-bottom:40px;max-width:420px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.stat-card{padding:28px 22px;}
+.stat-card.highlight{background:var(--showm);border:none;box-shadow:0 8px 32px var(--showm-glow);}
+.stat-icon{font-size:24px;margin-bottom:12px;}
+.stat-val{font-family:var(--fd);font-size:38px;letter-spacing:.03em;}
+.stat-card:not(.highlight) .stat-val{color:var(--showm);}
+.stat-card.highlight .stat-val{color:#fff;}
+.stat-lbl{font-size:12px;margin-top:4px;}
+.stat-card:not(.highlight) .stat-lbl{color:var(--muted);}
+.stat-card.highlight .stat-lbl{color:rgba(255,255,255,.65);}
+
+/* ── 섹션 헤드 ── */
+.sec-label{font-family:var(--fm);font-size:11px;color:var(--showm);letter-spacing:.1em;margin-bottom:12px;font-weight:700;}
+.sec-h2{font-family:var(--fd);font-size:48px;letter-spacing:.04em;color:var(--black);}
+.sec-h2-sm{font-family:var(--fd);font-size:40px;letter-spacing:.04em;color:var(--black);}
+
+/* ── HOW IT WORKS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.step-card{padding:28px 24px;position:relative;z-index:1;}
+.step-num{width:36px;height:36px;border-radius:10px;background:var(--showm-light);color:var(--showm);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:12px;font-weight:700;margin-bottom:16px;}
+.step-icon{font-size:24px;margin-bottom:12px;}
+.step-title{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--black);}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.7;}
+.step-arrow{position:absolute;top:30px;left:62%;width:76%;height:1px;background:linear-gradient(to right,var(--border2),transparent);z-index:0;}
+
+/* ── 공고 카드 ── */
+.jobs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.job-card{padding:24px;cursor:pointer;}
+.job-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.job-bdgs{display:flex;gap:6px;flex-wrap:wrap;}
+.job-title{font-weight:700;font-size:15px;margin-bottom:10px;line-height:1.5;color:var(--black);}
+.job-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.job-footer{border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;align-items:center;}
+.job-meta{display:flex;gap:12px;font-size:12px;color:var(--muted);}
+.budget-bdg{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;background:var(--showm-light);border:1px solid rgba(242,101,34,.2);font-size:11px;color:var(--showm);font-family:var(--fm);font-weight:700;}
+
+/* ── WHY ── */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.why-card{padding:28px 24px;}
+.why-icon{font-size:28px;margin-bottom:14px;}
+.why-title{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--black);}
+.why-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── CTA ── */
+.cta-box{background:var(--showm);border-radius:20px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta-deco1{position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;}
+.cta-deco2{position:absolute;left:-40px;bottom:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none;}
+.cta-inner{position:relative;z-index:1;}
+.cta-h2{font-family:var(--fd);font-size:clamp(36px,5vw,64px);letter-spacing:.04em;color:#fff;margin-bottom:10px;}
+.cta-sub{color:rgba(255,255,255,.72);font-size:16px;margin-bottom:36px;}
+.cta-btns{display:flex;gap:12px;justify-content:center;}
+
+/* ── 필터바 ── */
+.filter-bar{display:flex;gap:12px;align-items:center;margin-bottom:28px;flex-wrap:wrap;}
+.filter-cats{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-cat{padding:7px 14px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:var(--fm);font-weight:700;transition:all .15s;}
+.filter-cat.on{border-color:var(--showm);background:var(--showm-light);color:var(--showm);}
+
+/* ── 2컬럼 상세 ── */
+.detail-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;}
+.sidebar{position:sticky;top:80px;}
+.sec-card{padding:28px 32px;margin-bottom:20px;}
+.sec-card-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.sec-card-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.sec-card-title{font-size:14px;font-weight:700;color:var(--black);}
+.task-list{list-style:none;}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.task-dot{width:5px;height:5px;border-radius:50%;background:var(--showm);flex-shrink:0;margin-top:8px;}
+.req-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.req-item{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:12px;}
+.comm-list{display:flex;flex-direction:column;gap:10px;}
+.comm-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:13px;}
+.meta-row{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding-top:18px;border-top:1px solid var(--border);}
+.meta-item{display:flex;align-items:center;gap:5px;}
+
+/* ── 사이드바 카드 ── */
+.apply-head{background:var(--showm);padding:24px;}
+.apply-head-label{font-size:10px;color:rgba(255,255,255,.55);font-family:var(--fm);letter-spacing:.06em;margin-bottom:8px;}
+.apply-head-val{font-family:var(--fd);font-size:32px;color:#fff;letter-spacing:.03em;margin-bottom:4px;}
+.apply-head-note{font-size:11px;color:rgba(255,255,255,.55);line-height:1.6;}
+.apply-body{padding:20px 24px;}
+.apply-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid var(--border);}
+.apply-row:last-of-type{border-bottom:none;}
+.apply-lbl{color:var(--muted);}
+.apply-val{font-weight:600;color:var(--text);}
+.apply-val.gn{color:var(--green);}
+.apply-val.or{color:var(--showm);}
+.apply-notice{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--muted);background:var(--bg2);border-radius:8px;padding:12px;margin-top:12px;line-height:1.5;}
+.similar-card{padding:16px;}
+.similar-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.similar-item:last-child{border-bottom:none;padding-bottom:0;}
+.similar-info{flex:1;}
+.similar-title{font-size:12px;font-weight:600;color:var(--black);}
+.similar-meta{font-size:11px;color:var(--muted);}
+
+/* ── 전문가 카드 ── */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.exp-card{padding:24px;cursor:pointer;}
+.exp-card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
+.avatar{border-radius:27%;background:linear-gradient(135deg,var(--showm) 0%,#ffb57a 100%);display:flex;align-items:center;justify-content:center;font-family:var(--fd);color:#fff;flex-shrink:0;}
+.exp-name{font-weight:700;font-size:15px;color:var(--black);}
+.exp-role{font-size:12px;color:var(--muted);margin-top:2px;}
+.exp-bio{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.exp-skills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.exp-footer{border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;align-items:center;}
+.exp-stats{display:flex;gap:14px;font-size:12px;color:var(--muted);}
+
+/* ── 탭 ── */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.tab{padding:11px 22px;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;font-size:13px;font-family:var(--fb);font-weight:400;transition:all .15s;}
+.tab.on{color:var(--showm);border-bottom-color:var(--showm);font-weight:700;}
+
+/* ── 대시보드 ── */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.dash-card{padding:22px 20px;}
+.dash-icon{font-size:22px;margin-bottom:10px;}
+.dash-val{font-family:var(--fd);font-size:32px;color:var(--showm);}
+.dash-lbl{font-size:12px;color:var(--muted);margin-top:4px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.list-item:last-child{border-bottom:none;}
+.notif-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.notif-dot{width:6px;height:6px;border-radius:50%;background:var(--showm);flex-shrink:0;margin-top:6px;}
+
+/* ── 테이블 ── */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{padding:12px 16px;text-align:left;font-size:11px;color:var(--muted);font-weight:700;font-family:var(--fm);text-transform:uppercase;background:var(--bg2);border-bottom:1px solid var(--border);}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl-id{font-size:12px;font-family:var(--fm);color:var(--muted);}
+.tbl-main{font-size:13px;font-weight:500;color:var(--black);}
+.tbl-muted{font-size:13px;color:var(--muted);}
+.tbl-actions{display:flex;gap:6px;}
+.btn-del{padding:4px 10px;font-size:11px;background:var(--red-bg);color:var(--red);border:1px solid #fca5a5;border-radius:6px;cursor:pointer;font-family:var(--fb);}
+
+/* ── 정산 ── */
+.settle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.settle-card{padding:20px 24px;}
+.settle-lbl{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.settle-val{font-family:var(--fd);font-size:28px;}
+
+/* ── 요약 ── */
+.summary-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.summary-item{text-align:center;padding:14px 10px;background:var(--bg2);border-radius:8px;}
+.summary-val{font-weight:700;font-size:16px;color:var(--showm);margin-bottom:4px;}
+.summary-lbl{font-size:11px;color:var(--muted);}
+
+/* ── 모달 ── */
+.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);align-items:center;justify-content:center;animation:fadeIn .2s;}
+.modal-bg.open{display:flex;}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;width:560px;max-width:95vw;max-height:88vh;overflow-y:auto;padding:36px;animation:slideUp .25s;box-shadow:0 24px 64px rgba(0,0,0,.12);}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+.modal-title{font-family:var(--fd);font-size:28px;letter-spacing:.03em;color:var(--black);}
+.modal-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+.modal-close{width:32px;height:32px;border-radius:8px;background:var(--bg2);border:none;color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-notice{background:var(--showm-light);border:1px solid rgba(242,101,34,.2);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--showm);line-height:1.6;}
+.modal-terms{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;}
+.success-bg{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+.success-bg.open{display:flex;}
+.success-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px 40px;text-align:center;width:400px;max-width:90vw;animation:slideUp .25s;box-shadow:0 24px 64px rgba(0,0,0,.1);}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 20px;}
+.success-title{font-family:var(--fd);font-size:28px;letter-spacing:.03em;color:var(--black);margin-bottom:10px;}
+.success-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;}
+
+/* ── 브레드크럼 ── */
+.breadcrumb{display:flex;gap:6px;font-size:12px;color:var(--muted);margin-bottom:24px;align-items:center;}
+.bc-link{cursor:pointer;}
+.bc-link:hover{color:var(--showm);}
+.bc-cur{color:var(--text);}
+
+/* ── 프로필 헤더 ── */
+.prof-head{display:flex;gap:20px;align-items:flex-start;}
+.prof-stats{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:32px;}
+.prof-stat{text-align:center;}
+.prof-stat-icon{font-size:20px;margin-bottom:4px;}
+.prof-stat-val{font-weight:700;font-size:16px;color:var(--black);}
+.prof-stat-lbl{font-size:11px;color:var(--muted);}
+
+/* ── 마이페이지 헤더 ── */
+.my-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px;}
+
+/* ── 관리자 헤더 ── */
+.admin-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+
+/* ── 푸터 ── */
+footer{background:var(--black);padding:48px 48px 32px;margin-top:80px;}
+.footer-inner{max-width:1140px;margin:0 auto;}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;}
+.footer-logo{font-family:var(--fd);font-size:24px;letter-spacing:.1em;color:#fff;margin-bottom:12px;}
+.footer-logo span{color:var(--showm);}
+.footer-desc{font-size:12px;color:rgba(255,255,255,.3);line-height:1.8;max-width:260px;}
+.footer-links{display:flex;gap:48px;}
+.footer-group h4{font-size:11px;font-weight:700;color:rgba(255,255,255,.35);margin-bottom:14px;letter-spacing:.08em;text-transform:uppercase;}
+.footer-group a{display:block;font-size:13px;color:rgba(255,255,255,.45);margin-bottom:10px;cursor:pointer;transition:color .15s;}
+.footer-group a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2);}
+.footer-info{font-size:11px;color:rgba(255,255,255,.18);}
+
+/* ── 데모 퀵 네비 ── */
+.quick-nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:row;gap:4px;background:rgba(17,17,17,.9);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:8px 10px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.2);overflow-x:auto;max-width:96vw;}
+.qn-btn{padding:5px 12px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;font-family:var(--fm);transition:all .15s;white-space:nowrap;writing-mode:horizontal-tb;text-orientation:mixed;}
+.qn-btn.on{background:var(--showm);color:#fff;}
+
+/* ── 애니메이션 ── */
+.partner-item{
+  font-family:var(--fb);font-size:15px;font-weight:700;
+  color:var(--muted2);letter-spacing:-.01em;
+  padding:0 36px;white-space:nowrap;
+  transition:color .2s;cursor:default;
+}
+.partner-item:hover{color:var(--showm);}
+.partner-sep{
+  width:1px;height:20px;
+  background:var(--border2);
+  flex-shrink:0;
+}
+/* ── 히어로 패럴랙스 & 애니메이션 ── */
+@keyframes heroFloat1{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-30px) scale(1.04);}}
+@keyframes heroFloat2{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(20px) scale(0.97);}}
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+@keyframes heroBadgePop{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+@keyframes heroStatIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+@keyframes heroGlow{0%,100%{opacity:.07;}50%{opacity:.13;}}
+
+.hero-deco1{animation:heroFloat1 8s ease-in-out infinite;}
+.hero-deco2{animation:heroFloat2 10s ease-in-out infinite;}
+.hero-badge{animation:heroBadgePop .6s ease both;}
+.hero-h1{animation:heroFadeUp .7s .1s ease both;}
+.hero-sub1{animation:heroFadeUp .7s .2s ease both;}
+.hero-sub2{animation:heroFadeUp .7s .3s ease both;}
+.hero-btns{animation:heroFadeUp .7s .4s ease both;}
+.hero-stats .stat-card:nth-child(1){animation:heroStatIn .6s .5s ease both;}
+.hero-stats .stat-card:nth-child(2){animation:heroStatIn .6s .65s ease both;}
+.hero-stats .stat-card:nth-child(3){animation:heroStatIn .6s .8s ease both;}
+.hero-stats .stat-card:nth-child(4){animation:heroStatIn .6s .95s ease both;}
+
+/* 통계 카드 호버 */
+.stat-card{transition:transform .25s,box-shadow .25s;}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.stat-card.highlight:hover{box-shadow:0 8px 28px var(--showm-glow);}
+
+/* 섹션 스크롤 등장 */
+.reveal-section{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.reveal-section.visible{opacity:1;transform:none;}
+
+@keyframes logoScroll{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── 스크롤바 ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* ════════════════════════════════
+   모바일 반응형 (768px 이하)
+════════════════════════════════ */
+@media(max-width:768px){
+
+  /* ── NAV ── */
+  nav{padding:0 20px;height:56px;}
+  .nav-links{display:none;}
+  .nav-actions{display:none;}
+  .hamburger{display:flex;}
+
+  /* 햄버거 메뉴 */
+  .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:transparent;}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--black);border-radius:2px;transition:all .3s;}
+  .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);z-index:150;flex-direction:column;padding:32px 24px;gap:8px;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu-link{font-size:18px;font-weight:600;color:var(--black);padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;background:transparent;border-left:none;border-right:none;border-top:none;font-family:var(--fb);text-align:left;transition:color .15s;}
+  .mobile-menu-link:hover{color:var(--showm);}
+  .mobile-menu-actions{margin-top:24px;display:flex;flex-direction:column;gap:10px;}
+
+  /* ── 페이지 패딩 ── */
+  .wrap{padding:0 20px;}
+  .wrap-lg{padding:0 20px;}
+
+  /* ── 히어로 ── */
+  .hero{padding:88px 20px 56px;}
+  .hero-inner{grid-template-columns:1fr;gap:40px;}
+  .hero-h1{font-size:clamp(44px,12vw,64px);}
+  .hero-sub1{font-size:15px;}
+  .hero-sub2{font-size:12px;}
+  .hero-btns{flex-direction:column;}
+  .hero-btns .btn{width:100%;justify-content:center;}
+  .hero-stats{grid-template-columns:1fr 1fr;gap:12px;}
+  .stat-card{padding:20px 16px;}
+  .stat-val{font-size:30px;}
+
+  /* ── 섹션 ── */
+  .section{padding:56px 0;}
+  .sec-h2{font-size:28px;word-break:keep-all;line-height:1.25;}
+  .sec-h2-sm{font-size:26px;word-break:keep-all;line-height:1.25;}
+  .sec-label{text-align:left;}
+
+  /* ── 섹션 헤드 설명 텍스트 좌측 정렬 ── */
+  [style*="text-align:center"]{text-align:left!important;}
+  .steps-grid [style*="text-align:center"]{text-align:left!important;}
+
+  /* ── HOW IT WORKS ── */
+  .steps-grid{grid-template-columns:1fr;gap:16px;}
+  .step-arrow{display:none;}
+  .step-card{padding:22px 20px;}
+
+  /* ── 공고/전문가 그리드 ── */
+  .jobs-grid{grid-template-columns:1fr;gap:14px;}
+  .exp-grid{grid-template-columns:1fr;gap:14px;}
+
+  /* ── WHY 그리드 ── */
+  .why-grid{grid-template-columns:1fr;gap:14px;}
+  .why-card{padding:22px 20px;}
+
+  /* ── CTA ── */
+  .cta-box{padding:44px 24px;}
+  .cta-h2{font-size:clamp(32px,8vw,48px);}
+  .cta-sub{font-size:14px;}
+  .cta-btns{flex-direction:column;}
+  .cta-btns .btn{width:100%;justify-content:center;}
+
+  /* ── 공고 상세 ── */
+  .detail-grid{grid-template-columns:1fr;}
+  .sidebar{position:static;margin-top:0;}
+  .sec-card{padding:22px 20px;}
+  .req-grid2{grid-template-columns:1fr;}
+
+  /* ── 전문가 프로필 ── */
+  #page-expertprofile .detail-grid{grid-template-columns:1fr;}
+  .prof-head{flex-direction:column;gap:16px;}
+  .prof-stats{gap:16px;flex-wrap:wrap;}
+
+  /* ── 마이페이지 ── */
+  .my-head{flex-direction:column;gap:16px;align-items:flex-start;}
+  .dash-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .dash-val{font-size:26px;}
+  .two-col{grid-template-columns:1fr;gap:14px;}
+
+  /* ── 관리자 ── */
+  .admin-head{flex-direction:column;gap:12px;align-items:flex-start;}
+  .settle-grid{grid-template-columns:1fr;gap:12px;}
+  .summary-grid{grid-template-columns:repeat(3,1fr);}
+  .tbl{font-size:12px;}
+  .tbl th,.tbl td{padding:8px 10px;}
+
+  /* ── 탭 ── */
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tab{white-space:nowrap;padding:10px 16px;font-size:12px;}
+
+  /* ── 필터바 ── */
+  .filter-bar{flex-direction:column;align-items:flex-start;}
+  .filter-bar .inp{width:100%;}
+  .filter-cats{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;padding-bottom:4px;}
+  .filter-cat{white-space:nowrap;font-size:11px;padding:6px 12px;}
+
+  /* ── 푸터 ── */
+  .footer{padding:40px 20px 28px;}
+  .footer-top{flex-direction:column;gap:28px;}
+  .footer-links{flex-wrap:wrap;gap:24px;}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+
+  /* ── 모달 ── */
+  .modal{padding:24px;border-radius:16px;}
+  .modal-title{font-size:22px;}
+  .form-row{grid-template-columns:1fr;}
+
+  /* ── 퀵 네비 ── */
+  .quick-nav{bottom:12px;padding:6px 8px;gap:2px;max-width:95vw;overflow-x:auto;}
+  .qn-btn{padding:4px 8px;font-size:10px;white-space:nowrap;}
+
+  /* ── 회원가입 ── */
+  #page-signup .card{padding:24px 20px;}
+}
+
+/* ── 태블릿 (769px ~ 1024px) ── */
+@media(min-width:769px) and (max-width:1024px){
+  .wrap{padding:0 32px;}
+  .hero{padding:110px 32px 80px;}
+  .hero-h1{font-size:clamp(44px,6vw,68px);}
+  .jobs-grid{grid-template-columns:1fr 1fr;}
+  .exp-grid{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .steps-grid{grid-template-columns:1fr 1fr;gap:20px;}
+  .step-arrow{display:none;}
+  .dash-grid{grid-template-columns:1fr 1fr;}
+}
+
+/* ── 햄버거 버튼: 데스크탑에서 숨김 ── */
+@media(min-width:769px){
+  .hamburger{display:none;}
+  .mobile-menu{display:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <!-- 햄버거 버튼 -->
+  <button class="hamburger" onclick="toggleMobileMenu()" id="hamburgerBtn" aria-label="메뉴">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="nav-logo" onclick="goPage('home')">WITH <span>SHOWM</span></a>
+  <ul class="nav-links">
+    <li><button class="nav-link" onclick="goPage('jobs')">공고 목록</button></li>
+    <li><button class="nav-link" onclick="goPage('experts')" id="nav-experts" style="display:none">프리랜서 찾기</button></li>
+    <li><button class="nav-link" onclick="scrollToSection('section-how')">진행 방식</button></li>
+    <li><button class="nav-link" onclick="scrollToSection('section-why')">위드쇼엠 소개</button></li>
+    <li><button class="nav-link" onclick="goPage('admin')" id="nav-admin" style="display:none">관리자</button></li>
+  </ul>
+  <div class="nav-actions" id="navActions">
+    <button class="btn btn-g btn-md" onclick="goPage('login')">로그인</button>
+    <button class="btn btn-p btn-md" onclick="goPage('signup')">회원가입</button>
+  </div>
+</nav>
+
+<!-- 모바일 메뉴 -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-link" onclick="goPage('jobs');closeMobileMenu()">공고 목록</button>
+  <button class="mobile-menu-link" id="mobile-nav-experts" style="display:none" onclick="goPage('experts');closeMobileMenu()">프리랜서 찾기</button>
+  <button class="mobile-menu-link" onclick="scrollToSection('section-how');closeMobileMenu()">진행 방식</button>
+  <button class="mobile-menu-link" onclick="scrollToSection('section-why');closeMobileMenu()">위드쇼엠 소개</button>
+  <button class="mobile-menu-link" id="mobile-nav-admin" style="display:none" onclick="goPage('admin');closeMobileMenu()">관리자</button>
+  <div class="mobile-menu-actions" id="mobileNavActions">
+    <button class="btn btn-g" style="width:100%;justify-content:center;padding:13px;" onclick="doLogin();closeMobileMenu()">로그인</button>
+    <button class="btn btn-p" style="width:100%;justify-content:center;padding:13px;" onclick="goPage('register');closeMobileMenu()">프리랜서 등록하기</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     홈 페이지
+══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <!-- 히어로 -->
+  <div class="hero">
+    <div class="hero-deco1"></div>
+    <div class="hero-deco2"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">
+          <span class="hero-dot"></span>
+          <span class="hero-badge-txt">OWN YOUR CAREER</span>
+        </div>
+        <h1 class="hero-h1">커리어를<br><span>소유하라</span></h1>
+        <p class="hero-sub1">당신의 커리어가 흔들리지 않도록</p>
+        <p class="hero-sub2">10년간 150개 이상의 파트너와 함께한 쇼엠이 직접 운영합니다.<br>안정적인 외주 파트너십, 번 만큼 그대로 받는 구조.</p>
+        <div class="hero-btns">
+          <button class="btn btn-p btn-lg" onclick="goPage('jobs')">공고 둘러보기 →</button>
+          <button class="btn btn-o btn-lg" onclick="goPage('experts')">프리랜서 등록하기</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="card stat-card"><div class="stat-icon">👥</div><div class="stat-val">240+</div><div class="stat-lbl">등록 프리랜서</div></div>
+        <div class="card stat-card"><div class="stat-icon">✅</div><div class="stat-val">3,500+</div><div class="stat-lbl">완료 프로젝트</div></div>
+        <div class="card stat-card"><div class="stat-icon">⭐</div><div class="stat-val">4.8</div><div class="stat-lbl">평균 평점</div></div>
+        <div class="card stat-card highlight"><div class="stat-icon">💰</div><div class="stat-val">0%</div><div class="stat-lbl">플랫폼 수수료</div></div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- 최신 공고 -->
+  <div class="section wrap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;">
+      <div><div class="sec-label">LATEST JOBS</div><h2 class="sec-h2-sm">최신 공고</h2></div>
+      <button class="btn btn-g btn-md" onclick="goPage('jobs')">전체 보기 →</button>
+    </div>
+    <div class="jobs-grid" id="homeJobGrid"></div>
+  </div>
+
+    <!-- HOW IT WORKS -->
+  <div id="section-how" style="background:var(--bg2);padding:80px 0;">
+    <div class="wrap">
+      <div style="text-align:center;margin-bottom:52px;">
+        <div class="sec-label">HOW IT WORKS</div>
+        <h2 class="sec-h2">4단계로 완성되는 프로젝트</h2>
+      </div>
+      <div class="steps-grid">
+        <div style="position:relative;">
+          <div class="step-arrow"></div>
+          <div class="card step-card">
+            <div class="step-num">01</div>
+            <div class="step-icon">📋</div>
+            <div class="step-title">공고 등록</div>
+            <div class="step-desc">프로젝트 내용과 기간을 입력하면 검증된 전문가에게 바로 노출됩니다.</div>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <div class="step-arrow"></div>
+          <div class="card step-card">
+            <div class="step-num">02</div>
+            <div class="step-icon">🔍</div>
+            <div class="step-title">프리랜서 매칭</div>
+            <div class="step-desc">지원한 프리랜서의 포트폴리오를 검토하고 최적의 파트너를 매칭합니다.</div>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <div class="step-arrow"></div>
+          <div class="card step-card">
+            <div class="step-num">03</div>
+            <div class="step-icon">📝</div>
+            <div class="step-title">계약 & 착수</div>
+            <div class="step-desc">카카오 전자서명으로 본인인증 후 계약 체결 — 법적 효력 보장.</div>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <div class="card step-card">
+            <div class="step-num">04</div>
+            <div class="step-icon">💳</div>
+            <div class="step-title">완료 & 정산</div>
+            <div class="step-desc">프로젝트 완료 후 10영업일 이내, 수수료 없이 전액 정산됩니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 위드쇼엠 소개 -->
+  <div id="section-why" style="background:var(--bg2);padding:80px 0;">
+    <div class="wrap">
+      <div style="text-align:center;margin-bottom:52px;">
+        <div class="sec-label">WHY WITH SHOWM</div>
+        <h2 class="sec-h2">위드쇼엠을 선택하는 이유</h2>
+        <p style="font-size:14px;color:var(--muted);margin-top:16px;line-height:1.8;">기술과 데이터 기반으로 고객을 성장시키는 쇼엠이 직접 운영합니다.<br>10년간 쌓아온 마케팅 성공 케이스와 세분화된 전문가 네트워크가 함께합니다.</p>
+      </div>
+      <div class="why-grid">
+        <div class="card why-card" style="border-left:3px solid var(--showm)"><div class="why-icon">🛡</div><div class="why-title">수수료 0%</div><div class="why-desc">수수료 없이, 합리적으로. 협의된 금액 100% 전달.</div></div>
+        <div class="card why-card"><div class="why-icon">🏆</div><div class="why-title">10년 운영 노하우</div><div class="why-desc">150개 이상의 파트너사와 함께한 쇼엠의 검증된 매칭 시스템.</div></div>
+        <div class="card why-card"><div class="why-icon">✅</div><div class="why-title">검증된 프리랜서</div><div class="why-desc">포트폴리오·경력 심사를 통과한 프리랜서만 등록.</div></div>
+        <div class="card why-card"><div class="why-icon">📄</div><div class="why-title">전자계약</div><div class="why-desc">카카오 전자서명 기반 — 본인인증 + 법적 효력 + 비용 없음.</div></div>
+        <div class="card why-card"><div class="why-icon">⚡</div><div class="why-title">빠른 매칭</div><div class="why-desc">공고 등록 후 평균 24시간 내 프리랜서 지원.</div></div>
+        <div class="card why-card"><div class="why-icon">🔁</div><div class="why-title">장기 파트너십</div><div class="why-desc">완료 후 재계약 시 우선 매칭. 흔들리지 않는 일감.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 파트너사 로고 배너 -->
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:36px 0;overflow:hidden;">
+    <div style="text-align:center;margin-bottom:24px;">
+      <span style="font-family:var(--fm);font-size:11px;color:var(--muted);letter-spacing:.12em;font-weight:600;">TRUSTED PARTNERS</span>
+    </div>
+    <div style="position:relative;overflow:hidden;">
+      <div style="display:flex;gap:0;align-items:center;width:max-content;animation:logoScroll 28s linear infinite;">
+
+        <!-- 1세트 -->
+        <div class="partner-item">삼성화재</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">DB손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">현대해상</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">KB손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">메리츠화재</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">한화손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">롯데손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">흥국화재</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">MG손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">농협손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">AXA손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">하나손해보험</div>
+        <div class="partner-sep"></div>
+
+        <!-- 무한루프 복사본 -->
+        <div class="partner-item">삼성화재</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">DB손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">현대해상</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">KB손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">메리츠화재</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">한화손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">롯데손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">흥국화재</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">MG손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">농협손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">AXA손해보험</div>
+        <div class="partner-sep"></div>
+        <div class="partner-item">하나손해보험</div>
+        <div class="partner-sep"></div>
+      </div>
+      <!-- 양쪽 페이드 효과 -->
+      <div style="position:absolute;top:0;left:0;width:80px;height:100%;background:linear-gradient(to right,var(--bg2),transparent);pointer-events:none;"></div>
+      <div style="position:absolute;top:0;right:0;width:80px;height:100%;background:linear-gradient(to left,var(--bg2),transparent);pointer-events:none;"></div>
+    </div>
+  </div>
+
+    <!-- CTA -->
+  <div class="section wrap">
+    <div class="cta-box">
+      <div class="cta-deco1"></div><div class="cta-deco2"></div>
+      <div class="cta-inner">
+        <h2 class="cta-h2">커리어를 소유하라</h2>
+        <p class="cta-sub">당신의 커리어가 흔들리지 않도록, 위드쇼엠이 함께합니다.<br>번 만큼 그대로, 오래 함께.</p>
+        <div class="cta-btns">
+          <button class="btn btn-w btn-lg" onclick="goPage('jobs')">공고 등록하기</button>
+          <button class="btn btn-t btn-lg" onclick="goPage('experts')">프리랜서 등록하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-home"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     공고 목록
+══════════════════════════════════════ -->
+<div id="page-jobs" class="page">
+  <div class="wrap" style="padding-top:96px;padding-bottom:60px;">
+    <div style="margin-bottom:32px;">
+      <div class="sec-label">FIND PROJECTS</div>
+      <h1 style="font-family:var(--fd);font-size:48px;letter-spacing:.04em;color:var(--black);margin-bottom:6px;">공고 목록</h1>
+      <p style="color:var(--muted);font-size:13px;">현재 6개의 프로젝트가 프리랜서를 기다리고 있습니다.</p>
+    </div>
+    <div class="filter-bar">
+      <input class="inp" style="width:280px;" placeholder="🔍  공고 검색..." oninput="filterJobs(this.value)" id="jobSearch">
+      <div class="filter-cats" id="catFilter">
+        <button class="filter-cat on" onclick="setCat(this,'전체')">전체</button>
+        <button class="filter-cat" onclick="setCat(this,'BACKEND')">BACKEND</button>
+        <button class="filter-cat" onclick="setCat(this,'FRONTEND')">FRONTEND</button>
+        <button class="filter-cat" onclick="setCat(this,'FULLSTACK')">FULLSTACK</button>
+        <button class="filter-cat" onclick="setCat(this,'AI')">AI</button>
+        <button class="filter-cat" onclick="setCat(this,'DESIGN')">DESIGN</button>
+        <button class="filter-cat" onclick="setCat(this,'DATA')">DATA</button>
+      </div>
+      <select class="inp" style="width:130px;margin-left:auto;"><option>최신순</option><option>마감 임박순</option><option>인기순</option></select>
+    </div>
+    <div class="jobs-grid" id="allJobGrid"></div>
+  </div>
+  <div id="footer-jobs"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     공고 상세
+══════════════════════════════════════ -->
+<div id="page-jobdetail" class="page">
+  <div class="wrap" style="padding-top:96px;padding-bottom:60px;">
+    <div class="breadcrumb">
+      <span class="bc-link" onclick="goPage('home')">홈</span><span>›</span>
+      <span class="bc-link" onclick="goPage('jobs')">공고 목록</span><span>›</span>
+      <span class="bc-cur" id="jd-bc">공고 상세</span>
+    </div>
+    <div class="detail-grid">
+      <!-- 메인 -->
+      <div>
+        <div class="card" style="padding:32px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="jd-badges"></div>
+            <span style="font-family:var(--fm);font-size:11px;color:var(--muted);">등록일 2025.05.01</span>
+          </div>
+          <h1 id="jd-title" style="font-family:var(--fd);font-size:clamp(28px,4vw,44px);letter-spacing:.03em;line-height:1.1;margin-bottom:20px;color:var(--black);"></h1>
+          <div class="meta-row" id="jd-meta"></div>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--showm-light);">📋</div><span class="sec-card-title">업무 내용</span></div>
+          <ul class="task-list" id="jd-tasks"></ul>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--bg2);">⚙️</div><span class="sec-card-title">요구 기술 스택</span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="jd-tags"></div>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--amber-bg);">✅</div><span class="sec-card-title">우대 조건</span></div>
+          <div class="req-grid2">
+            <div class="req-item"><span>🔐</span><span>OAuth 2.0 소셜 로그인 구현 경험</span></div>
+            <div class="req-item"><span>☁️</span><span>클라우드 서비스 실무 사용 경험</span></div>
+            <div class="req-item"><span>🛒</span><span>이커머스 도메인 API 개발 경험</span></div>
+            <div class="req-item"><span>🧪</span><span>단위/통합 테스트 작성 경험</span></div>
+            <div class="req-item"><span>📦</span><span>Docker 컨테이너 환경 배포 경험</span></div>
+            <div class="req-item"><span>📝</span><span>API 문서화 경험 (Swagger / Postman)</span></div>
+          </div>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--blue-bg);">💬</div><span class="sec-card-title">소통 및 진행 방식</span></div>
+          <div class="comm-list">
+            <div class="comm-item"><span class="bdg bdg-bl">기본 소통</span>슬랙(Slack) 채널을 통해 일상적인 업무 소통 진행</div>
+            <div class="comm-item"><span class="bdg bdg-gy">업무 관리</span>노션(Notion) 기반으로 작업 현황 및 일정 공유</div>
+            <div class="comm-item"><span class="bdg bdg-am">진행 보고</span>주 1회 담당자에게 진행 현황 서면 보고</div>
+            <div class="comm-item"><span class="bdg bdg-gn">계약</span>카카오 전자서명 — 본인인증 기반 법적 효력 보장</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사이드바 -->
+      <div class="sidebar">
+        <div class="card" style="overflow:hidden;margin-bottom:16px;box-shadow:var(--sh);">
+          <div class="apply-head">
+            <div class="apply-head-label">비용 안내</div>
+            <div class="apply-head-val">지원 후 협의</div>
+            <div class="apply-head-note">수수료 0% — 협의된 금액 전액 지급<br>지원서 검토 후 담당자가 연락드립니다</div>
+          </div>
+          <div class="apply-body">
+            <div class="apply-row"><span class="apply-lbl">계약 기간</span><span class="apply-val" id="jd-period"></span></div>
+            <div class="apply-row"><span class="apply-lbl">정산 방식</span><span class="apply-val gn">완료 후 10영업일</span></div>
+            <div class="apply-row"><span class="apply-lbl">작업 방식</span><span class="apply-val" id="jd-type"></span></div>
+            <div class="apply-row"><span class="apply-lbl">계약 방식</span><span class="apply-val">카카오 전자서명</span></div>
+            <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+            <button class="btn btn-p btn-full" style="margin-bottom:10px;padding:14px;font-size:15px;" onclick="openApplyModal()">지원하기 →</button>
+            <button class="btn btn-g btn-full" style="padding:12px;font-size:13px;">🔖 공고 저장</button>
+            <div class="apply-notice"><span>ℹ️</span>지원 후 3영업일 이내 담당자가 비용 협의를 위해 연락드립니다.</div>
+          </div>
+        </div>
+        <div class="card similar-card">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;">비슷한 공고</div>
+          <div id="jd-similar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-jobdetail"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     프리랜서 찾기
+══════════════════════════════════════ -->
+<div id="page-experts" class="page">
+  <div class="wrap" style="padding-top:96px;padding-bottom:60px;">
+    <div style="margin-bottom:32px;">
+      <div class="sec-label">FIND EXPERTS</div>
+      <h1 style="font-family:var(--fd);font-size:48px;letter-spacing:.04em;color:var(--black);margin-bottom:6px;">프리랜서 찾기</h1>
+      <p style="color:var(--muted);font-size:13px;">검증된 전문가들이 직접 프로필을 등록하고 프로젝트 제안을 기다리고 있습니다.</p>
+    </div>
+    <div style="margin-bottom:28px;">
+      <input class="inp" style="width:320px;" placeholder="🔍  이름, 역할, 기술 검색..." oninput="filterExperts(this.value)">
+    </div>
+    <div class="exp-grid" id="expertGrid"></div>
+  </div>
+  <div id="footer-experts"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     전문가 프로필
+══════════════════════════════════════ -->
+<div id="page-expertprofile" class="page">
+  <div class="wrap" style="padding-top:96px;padding-bottom:60px;">
+    <div class="breadcrumb">
+      <span class="bc-link" onclick="goPage('home')">홈</span><span>›</span>
+      <span class="bc-link" onclick="goPage('experts')">프리랜서 찾기</span><span>›</span>
+      <span class="bc-cur" id="ep-bc">전문가 프로필</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start;">
+      <div>
+        <div class="card" style="padding:32px;margin-bottom:20px;">
+          <div class="prof-head">
+            <div class="avatar" id="ep-avatar" style="width:80px;height:80px;font-size:27px;"></div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <h1 id="ep-name" style="font-size:26px;font-weight:700;color:var(--black);margin-bottom:4px;"></h1>
+                  <div id="ep-role" style="font-size:14px;color:var(--muted);margin-bottom:12px;"></div>
+                  <div style="display:flex;gap:8px;" id="ep-badges"></div>
+                </div>
+                <div class="budget-bdg">💬 비용 협의</div>
+              </div>
+            </div>
+          </div>
+          <div class="prof-stats" id="ep-stats"></div>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--showm-light);">👤</div><span class="sec-card-title">자기소개</span></div>
+          <p id="ep-bio" style="font-size:13px;color:var(--text);line-height:1.8;"></p>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--bg2);">⚙️</div><span class="sec-card-title">기술 스택</span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="ep-skills"></div>
+        </div>
+
+        <div class="card sec-card">
+          <div class="sec-card-head"><div class="sec-card-icon" style="background:var(--green-bg);">📁</div><span class="sec-card-title">완료 프로젝트</span></div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;"><div><div style="font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;">이커머스 쇼핑몰 API 구축</div><div style="font-size:11px;color:var(--muted);">2024.11~2025.01</div></div><div style="font-size:11px;color:var(--amber);">⭐ 5.0</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;"><div><div style="font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;">핀테크 서비스 백엔드 개발</div><div style="font-size:11px;color:var(--muted);">2024.08~2024.10</div></div><div style="font-size:11px;color:var(--amber);">⭐ 4.9</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;"><div><div style="font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;">SaaS 대시보드 개발</div><div style="font-size:11px;color:var(--muted);">2024.05~2024.07</div></div><div style="font-size:11px;color:var(--amber);">⭐ 5.0</div></div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div style="position:sticky;top:80px;">
+        <div class="card" style="padding:24px;margin-bottom:16px;">
+          <button class="btn btn-p btn-full" style="padding:14px;font-size:15px;margin-bottom:10px;" onclick="openContactModal()">프로젝트 제안하기 →</button>
+          <button class="btn btn-g btn-full" style="padding:12px;">🔖 북마크</button>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+            <div class="apply-row"><span class="apply-lbl">응답률</span><span class="apply-val gn">98%</span></div>
+            <div class="apply-row"><span class="apply-lbl">평균 응답시간</span><span class="apply-val">2시간 이내</span></div>
+            <div class="apply-row"><span class="apply-lbl">작업 방식</span><span class="apply-val">원격</span></div>
+            <div class="apply-row"><span class="apply-lbl">비용</span><span class="apply-val or">제안 후 협의</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-expertprofile"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     마이페이지
+══════════════════════════════════════ -->
+<div id="page-mypage" class="page">
+  <div class="wrap" style="padding-top:96px;padding-bottom:60px;">
+    <div class="my-head">
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div class="avatar" style="width:64px;height:64px;font-size:22px;">홍</div>
+        <div>
+          <h1 style="font-size:22px;font-weight:700;color:var(--black);">홍길동</h1>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px;">마케팅팀 · 쇼엠 · 가입일 2024.09.01</div>
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <span class="bdg bdg-or">팀 계정</span>
+            <span class="bdg bdg-bl">마케팅팀</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-g btn-md" onclick="goPage('chat')">💬 워크룸</button>
+        <button class="btn btn-p btn-md">+ 공고 등록</button>
+      </div>
+    </div>
+    <!-- 계정 유형 전환 (데모용) -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;padding:12px 16px;background:var(--bg2);border-radius:10px;border:1px solid var(--border);">
+      <span style="font-size:12px;color:var(--muted);align-self:center;font-family:var(--fm);">데모 계정 전환:</span>
+      <button class="btn btn-g btn-sm" onclick="switchMyPageType('admin')" id="type-admin" style="border-color:var(--showm);color:var(--showm);">쇼엠 팀원 (관리자)</button>
+      <button class="btn btn-g btn-sm" onclick="switchMyPageType('staff')" id="type-staff">쇼엠 팀원 (일반)</button>
+      <button class="btn btn-g btn-sm" onclick="switchMyPageType('freelancer')" id="type-freelancer">프리랜서</button>
+    </div>
+
+    <div class="tabs" id="mypage-tabs">
+      <button class="tab on" onclick="myTab(this,'my-overview')">대시보드</button>
+      <button class="tab" onclick="myTab(this,'my-workroom')">워크룸</button>
+      <button class="tab" onclick="myTab(this,'my-applied')">지원 현황</button>
+      <button class="tab my-team-tab" onclick="myTab(this,'my-team')">팀 계정</button>
+      <button class="tab my-freelancer-tab" onclick="myTab(this,'my-myprofile')" style="display:none;">내 프로필</button>
+      <button class="tab" onclick="myTab(this,'my-saved')">저장 공고</button>
+      <button class="tab" onclick="myTab(this,'my-profile')">내 정보</button>
+    </div>
+
+    <!-- 대시보드 -->
+    <div id="my-overview">
+      <div class="dash-grid">
+        <div class="card dash-card"><div class="dash-icon">📋</div><div class="dash-val">2개</div><div class="dash-lbl">등록 공고</div></div>
+        <div class="card dash-card"><div class="dash-icon">👥</div><div class="dash-val">25명</div><div class="dash-lbl">총 지원자</div></div>
+        <div class="card dash-card"><div class="dash-icon">✅</div><div class="dash-val">1건</div><div class="dash-lbl">진행 중</div></div>
+        <div class="card dash-card"><div class="dash-icon">💰</div><div class="dash-val">430만</div><div class="dash-lbl">완료 정산</div></div>
+      </div>
+
+      <!-- 진행 중 워크룸 -->
+      <div style="margin-bottom:20px;">
+        <div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:14px;">🏗 진행 중인 워크룸</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card card-hover" style="padding:18px 20px;cursor:pointer;" onclick="goPage('chat')">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="avatar" style="width:40px;height:40px;font-size:14px;">KT</div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--black);">쇼핑몰 백엔드 API 개발</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:3px;">김태민 · 백엔드 개발자 · 마케팅팀 담당</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span class="bdg bdg-or">작업중</span>
+                <span style="font-size:11px;color:var(--muted);">메시지 3↑</span>
+              </div>
+            </div>
+            <div style="margin-top:14px;display:flex;align-items:center;gap:0;">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;">✓</div>
+                <span style="font-size:10px;color:var(--green);">계약완료</span>
+              </div>
+              <div style="height:2px;flex:1;background:var(--showm);margin-bottom:14px;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--showm-light);border:2px solid var(--showm);display:flex;align-items:center;justify-content:center;font-size:12px;">⬡</div>
+                <span style="font-size:10px;color:var(--showm);font-weight:700;">작업중</span>
+              </div>
+              <div style="height:2px;flex:1;background:var(--border);margin-bottom:14px;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);">○</div>
+                <span style="font-size:10px;color:var(--muted);">1차 검토</span>
+              </div>
+              <div style="height:2px;flex:1;background:var(--border);margin-bottom:14px;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);">○</div>
+                <span style="font-size:10px;color:var(--muted);">수정중</span>
+              </div>
+              <div style="height:2px;flex:1;background:var(--border);margin-bottom:14px;"></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);">○</div>
+                <span style="font-size:10px;color:var(--muted);">최종완료</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card" style="padding:24px;">
+          <div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:16px;">최근 지원 현황</div>
+          <div class="list-item"><div><div style="font-size:13px;font-weight:500;color:var(--black);">쇼핑몰 백엔드 API 개발</div><div style="font-size:11px;color:var(--muted);">2025.05.02</div></div><span class="bdg bdg-am">검토중</span></div>
+          <div class="list-item"><div><div style="font-size:13px;font-weight:500;color:var(--black);">SNS 콘텐츠 자동화 파이프라인</div><div style="font-size:11px;color:var(--muted);">2025.04.28</div></div><span class="bdg bdg-gn"><b style="color:inherit">매칭 확정</b></span></div>
+          <div class="list-item"><div><div style="font-size:13px;font-weight:500;color:var(--black);">모바일 앱 UI/UX 디자인</div><div style="font-size:11px;color:var(--muted);">2025.04.20</div></div><span class="bdg bdg-rd">미매칭</span></div>
+        </div>
+        <div class="card" style="padding:24px;">
+          <div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:16px;">알림</div>
+          <div class="notif-item"><div class="notif-dot"></div><span style="color:var(--text);line-height:1.5;">[워크룸] 김태민님이 새 메시지를 보냈습니다.</span></div>
+          <div class="notif-item"><div class="notif-dot"></div><span style="color:var(--text);line-height:1.5;">[매칭 확정] SNS 콘텐츠 자동화 파이프라인에 매칭이 확정되었습니다.</span></div>
+          <div class="notif-item"><div class="notif-dot"></div><span style="color:var(--text);line-height:1.5;">[검토중] 쇼핑몰 백엔드 API 개발 지원서가 검토 중입니다.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 워크룸 탭 -->
+    <div id="my-workroom" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:14px;font-weight:700;color:var(--black);">진행 중인 워크룸</div>
+        <select class="inp" style="width:140px;font-size:12px;"><option>전체</option><option>작업중</option><option>검토중</option><option>완료</option></select>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <!-- 워크룸 카드 1 -->
+        <div class="card card-hover" style="padding:22px 24px;cursor:pointer;" onclick="goPage('chat')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="avatar" style="width:44px;height:44px;font-size:15px;">KT</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--black);">쇼핑몰 백엔드 API 개발</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px;">김태민 · 백엔드 개발자 · 2025.05.01~06.30</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span class="bdg bdg-or">작업중</span>
+              <span style="font-size:11px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;font-weight:700;">NEW 3</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;font-size:12px;color:var(--muted);">
+            <span>👤 마케팅팀 홍길동 담당</span>
+            <span>📎 산출물 3개</span>
+            <span>💬 메시지 12개</span>
+          </div>
+        </div>
+        <!-- 워크룸 카드 2 -->
+        <div class="card card-hover" style="padding:22px 24px;cursor:pointer;opacity:.7;" onclick="goPage('chat')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="avatar" style="width:44px;height:44px;font-size:15px;">JD</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--black);">SNS 자동화 파이프라인</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px;">정다은 · 마케팅 자동화 · 2025.04.28~05.28</div>
+              </div>
+            </div>
+            <span class="bdg bdg-gn">최종완료</span>
+          </div>
+          <div style="display:flex;gap:10px;font-size:12px;color:var(--muted);">
+            <span>👤 콘텐츠팀 이철수 담당</span>
+            <span>📎 산출물 5개</span>
+            <span>💬 메시지 34개</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 지원 현황 -->
+    <div id="my-applied" style="display:none;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card" style="padding:20px;display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;gap:12px;align-items:center;"><span class="bdg bdg-bl">BACKEND</span><div><div style="font-size:14px;font-weight:600;color:var(--black);">쇼핑몰 백엔드 API 개발</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">지원일: 2025.05.02 · 2개월</div></div></div><span class="bdg bdg-am">검토중</span></div>
+        <div class="card" style="padding:20px;display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;gap:12px;align-items:center;"><span class="bdg bdg-am">AI</span><div><div style="font-size:14px;font-weight:600;color:var(--black);">SNS 콘텐츠 자동화 파이프라인</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">지원일: 2025.04.28 · 1개월</div></div></div><span class="bdg bdg-gn"><b style="color:inherit">매칭 확정</b></span></div>
+        <div class="card" style="padding:20px;display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;gap:12px;align-items:center;"><span class="bdg bdg-rd">DESIGN</span><div><div style="font-size:14px;font-weight:600;color:var(--black);">모바일 앱 UI/UX 디자인</div><div style="font-size:12px;color:var(--muted);margin-top:3px;">지원일: 2025.04.20 · 6주</div></div></div><span class="bdg bdg-rd">미매칭</span></div>
+      </div>
+    </div>
+
+    <!-- 팀 계정 -->
+    <div id="my-team" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:4px;">팀 계정 관리</div>
+          <div style="font-size:12px;color:var(--muted);">팀원에게 계정을 부여하고 프로젝트 담당자를 지정할 수 있습니다.</div>
+        </div>
+        <button class="btn btn-p btn-md">+ 팀원 초대</button>
+      </div>
+      <div class="card" style="overflow:hidden;margin-bottom:20px;">
+        <table class="tbl">
+          <thead><tr><th>팀원</th><th>팀/부서</th><th>권한</th><th>담당 프로젝트</th><th>상태</th><th>액션</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar" style="width:32px;height:32px;font-size:11px;">홍</div><div><div style="font-size:13px;font-weight:600;color:var(--black);">홍길동</div><div style="font-size:11px;color:var(--muted);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7b1314151c3b0813140c16551009">[email&#160;protected]</a></div></div></div></td>
+              <td class="tbl-muted">마케팅팀</td>
+              <td><span class="bdg bdg-or">관리자</span></td>
+              <td class="tbl-muted">쇼핑몰 백엔드 API 개발</td>
+              <td><span class="bdg bdg-gn">활성</span></td>
+              <td><button class="btn btn-g btn-sm">수정</button></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar" style="width:32px;height:32px;font-size:11px;">이</div><div><div style="font-size:13px;font-weight:600;color:var(--black);">이철수</div><div style="font-size:11px;color:var(--muted);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="96faf3f3d6e5fef9e1fbb8fde4">[email&#160;protected]</a></div></div></div></td>
+              <td class="tbl-muted">콘텐츠팀</td>
+              <td><span class="bdg bdg-bl">일반</span></td>
+              <td class="tbl-muted">SNS 자동화 파이프라인</td>
+              <td><span class="bdg bdg-gn">활성</span></td>
+              <td><div style="display:flex;gap:6px;"><button class="btn btn-g btn-sm">수정</button><button class="btn btn-g btn-sm">정지</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar" style="width:32px;height:32px;font-size:11px;">박</div><div><div style="font-size:13px;font-weight:600;color:var(--black);">박민지</div><div style="font-size:11px;color:var(--muted);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6919081b02291a01061e0447021b">[email&#160;protected]</a></div></div></div></td>
+              <td class="tbl-muted">개발팀</td>
+              <td><span class="bdg bdg-bl">일반</span></td>
+              <td style="color:var(--muted2);font-size:13px;">미배정</td>
+              <td><span class="bdg bdg-am">초대 중</span></td>
+              <td><button class="btn btn-g btn-sm">재초대</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="padding:20px;background:var(--showm-light);border:1px solid rgba(242,101,34,.2);">
+        <div style="font-size:13px;font-weight:700;color:var(--showm);margin-bottom:6px;">💡 팀 계정 안내</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">팀원 계정을 부여하면 담당 프로젝트의 워크룸에 접근하고 프리랜서와 직접 소통할 수 있습니다.<br>관리자는 모든 워크룸을 열람할 수 있으며, 일반 계정은 본인이 담당한 프로젝트만 접근 가능합니다.</div>
+      </div>
+    </div>
+
+    <!-- 프리랜서 내 프로필 -->
+    <div id="my-myprofile" style="display:none;">
+      <div style="max-width:640px;">
+        <div class="card" style="padding:28px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div style="font-weight:700;font-size:14px;color:var(--black);">공개 프로필</div>
+            <span class="bdg bdg-gn">승인 완료 · 노출 중</span>
+          </div>
+          <div class="form-g"><label class="lbl">역할/직군</label><input class="inp" value="백엔드 개발자"></div>
+          <div class="form-g"><label class="lbl">경력</label><select class="inp"><option>3~5년</option></select></div>
+          <div class="form-g"><label class="lbl">기술 스택</label><input class="inp" value="Node.js, Python, AWS, PostgreSQL"></div>
+          <div class="form-g"><label class="lbl">포트폴리오 링크</label><input class="inp" value="https://github.com/ktaem"></div>
+          <div class="form-g"><label class="lbl">자기소개</label><textarea class="inp">7년차 백엔드 개발자. 이커머스 및 핀테크 도메인 경험 다수.</textarea></div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div><label class="lbl">작업 방식</label><select class="inp"><option>원격</option><option>대면</option><option>혼합</option></select></div>
+            <div><label class="lbl">현재 상태</label><select class="inp"><option>수주 가능</option><option>부분 가능</option><option>현재 불가</option></select></div>
+          </div>
+          <button class="btn btn-p btn-md">저장하기</button>
+        </div>
+        <div class="card" style="padding:20px;background:var(--showm-light);border:1px solid rgba(242,101,34,.2);">
+          <div style="font-size:12px;font-weight:700;color:var(--showm);margin-bottom:6px;">💡 프로필 안내</div>
+          <div style="font-size:12px;color:var(--text);line-height:1.8;">프로필이 승인되면 프리랜서 찾기 페이지에 노출됩니다.<br>정보를 최신 상태로 유지하면 프로젝트 제안 확률이 높아집니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 저장 공고 -->
+    <div id="my-saved" style="display:none;">
+      <div class="jobs-grid" id="savedJobGrid"></div>
+    </div>
+
+    <!-- 내 정보 -->
+    <div id="my-profile" style="display:none;">
+      <div style="max-width:600px;">
+
+        <!-- 기본 정보 -->
+        <div class="card" style="padding:28px;margin-bottom:16px;">
+          <div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:20px;">기본 정보</div>
+          <div class="form-g"><label class="lbl">이름</label><input class="inp" value="홍길동"></div>
+          <div class="form-g"><label class="lbl">이메일</label><input class="inp" value="hong@showm.kr" readonly style="background:var(--bg3);color:var(--muted);"></div>
+          <div class="form-g"><label class="lbl">연락처</label><input class="inp" value="010-1234-5678"></div>
+          <div class="form-g"><label class="lbl">소속 팀</label><input class="inp" value="마케팅팀"></div>
+          <button class="btn btn-p btn-md" style="margin-top:8px;">저장하기</button>
+        </div>
+
+        <!-- 비밀번호 변경 -->
+        <div class="card" style="padding:28px;margin-bottom:16px;">
+          <div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:6px;">비밀번호 변경</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">소셜 로그인 계정은 해당 플랫폼에서 변경하세요.</div>
+          <div class="form-g"><label class="lbl">현재 비밀번호</label><input class="inp" type="password" placeholder="현재 비밀번호 입력"></div>
+          <div class="form-g"><label class="lbl">새 비밀번호</label><input class="inp" type="password" placeholder="8자 이상, 영문+숫자 조합"></div>
+          <div class="form-g"><label class="lbl">새 비밀번호 확인</label><input class="inp" type="password" placeholder="새 비밀번호 재입력"></div>
+          <button class="btn btn-g btn-md">비밀번호 변경</button>
+        </div>
+
+        <!-- 알림 설정 -->
+        <div class="card" style="padding:28px;margin-bottom:16px;">
+          <div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:6px;">알림 설정</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">카카오톡 알림톡·SMS는 Phase 2에서 지원 예정입니다.</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--bg2);border-radius:10px;">
+              <div><div style="font-size:13px;font-weight:600;color:var(--black);">이메일 알림</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">지원 현황, 워크룸 메시지, 정산 알림</div></div>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--showm);"><span style="font-size:12px;color:var(--text);">수신</span></label>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--bg2);border-radius:10px;opacity:.5;">
+              <div><div style="font-size:13px;font-weight:600;color:var(--black);">카카오톡 알림톡</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">준비 중</div></div>
+              <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" disabled style="width:18px;height:18px;"><span style="font-size:12px;color:var(--muted);">준비 중</span></label>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--bg2);border-radius:10px;opacity:.5;">
+              <div><div style="font-size:13px;font-weight:600;color:var(--black);">문자 알림 (SMS)</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">준비 중</div></div>
+              <label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" disabled style="width:18px;height:18px;"><span style="font-size:12px;color:var(--muted);">준비 중</span></label>
+            </div>
+          </div>
+          <button class="btn btn-g btn-md" style="margin-top:16px;">알림 설정 저장</button>
+        </div>
+
+        <!-- 프리랜서 등록 정보 (프리랜서 계정에서만 노출) -->
+        <div class="card" style="padding:28px;margin-bottom:16px;" id="my-freelancer-reg-section">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div>
+              <div style="font-weight:700;font-size:14px;color:var(--black);">프리랜서 등록 정보</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:3px;">프리랜서 찾기 페이지에 노출되는 프로필 정보입니다.</div>
+            </div>
+            <span class="bdg bdg-gn">승인 완료</span>
+          </div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div><label class="lbl">주요 직군</label>
+              <select class="inp"><option>백엔드 개발</option><option>프론트엔드 개발</option><option>풀스택 개발</option><option>AI/ML</option><option>UI/UX 디자인</option><option>데이터 분석</option><option>마케팅 자동화</option></select>
+            </div>
+            <div><label class="lbl">경력</label>
+              <select class="inp"><option>1년 미만</option><option>1~3년</option><option selected>3~5년</option><option>5~10년</option><option>10년 이상</option></select>
+            </div>
+          </div>
+          <div class="form-g"><label class="lbl">기술 스택</label><input class="inp" value="Node.js, Python, AWS, PostgreSQL"><div style="font-size:11px;color:var(--muted2);margin-top:4px;">쉼표로 구분 · 검색 필터에 활용됩니다.</div></div>
+          <div class="form-g"><label class="lbl">포트폴리오 링크</label><input class="inp" value="https://github.com/ktaem"></div>
+          <div class="form-g"><label class="lbl">자기소개</label><textarea class="inp">7년차 백엔드 개발자. 이커머스 및 핀테크 도메인 경험 다수.</textarea></div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div><label class="lbl">작업 방식</label><select class="inp"><option>원격</option><option>대면</option><option>혼합</option></select></div>
+            <div><label class="lbl">수주 상태</label><select class="inp"><option>수주 가능</option><option>부분 가능</option><option>현재 불가</option></select></div>
+          </div>
+          <div class="form-row" style="margin-bottom:20px;">
+            <div><label class="lbl">정산 방식</label><select class="inp"><option>개인 (원천징수)</option><option>개인사업자</option><option>법인사업자</option><option>기타 협의</option></select></div>
+            <div><label class="lbl">희망 단가</label>
+              <div style="display:flex;gap:8px;">
+                <select class="inp" style="width:120px;"><option>시간당</option><option>일당</option><option>월 고정</option><option>프로젝트</option></select>
+                <input class="inp" placeholder="금액 입력">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-p btn-md">프리랜서 정보 저장</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div id="footer-mypage"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     관리자
+══════════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <div class="wrap-lg" style="padding-top:96px;padding-bottom:60px;">
+    <div class="admin-head">
+      <div><div class="sec-label">ADMIN PANEL</div><h1 style="font-family:var(--fd);font-size:40px;letter-spacing:.04em;color:var(--black);">관리자 대시보드</h1></div>
+      <div style="display:flex;gap:8px;"><span class="bdg bdg-gn" style="font-size:12px;padding:6px 14px;">🟢 시스템 정상</span><button class="btn btn-g btn-md">설정</button></div>
+    </div>
+    <div class="tabs">
+      <button class="tab on" onclick="adminTab(this,'ad-dashboard')">대시보드</button>
+      <button class="tab" onclick="adminTab(this,'ad-workroom')">워크룸 관리</button>
+      <button class="tab" onclick="adminTab(this,'ad-jobs')">공고 관리</button>
+      <button class="tab" onclick="adminTab(this,'ad-experts')">프리랜서 관리</button>
+      <button class="tab" onclick="adminTab(this,'ad-settle')">정산 관리</button>
+    </div>
+
+    <div id="ad-dashboard">
+      <div class="dash-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="card dash-card"><div style="display:flex;justify-content:space-between;margin-bottom:14px;"><span style="font-size:22px;">📋</span><span style="font-size:10px;color:var(--green);background:var(--green-bg);padding:3px 8px;border-radius:4px;font-family:var(--fm);font-weight:700;">↑ 이번달</span></div><div class="dash-val">48</div><div class="dash-lbl">전체 공고</div></div>
+        <div class="card dash-card"><div style="display:flex;justify-content:space-between;margin-bottom:14px;"><span style="font-size:22px;">👥</span><span style="font-size:10px;color:var(--green);background:var(--green-bg);padding:3px 8px;border-radius:4px;font-family:var(--fm);font-weight:700;">↑ 이번달</span></div><div style="font-family:var(--fd);font-size:32px;color:var(--green);">2,412</div><div class="dash-lbl">등록 전문가</div></div>
+        <div class="card dash-card"><div style="display:flex;justify-content:space-between;margin-bottom:14px;"><span style="font-size:22px;">💰</span><span style="font-size:10px;color:var(--green);background:var(--green-bg);padding:3px 8px;border-radius:4px;font-family:var(--fm);font-weight:700;">↑ 이번달</span></div><div style="font-family:var(--fd);font-size:32px;color:var(--amber);">3,840만</div><div class="dash-lbl">이번달 정산</div></div>
+        <div class="card dash-card"><div style="display:flex;justify-content:space-between;margin-bottom:14px;"><span style="font-size:22px;">⚡</span><span style="font-size:10px;color:var(--green);background:var(--green-bg);padding:3px 8px;border-radius:4px;font-family:var(--fm);font-weight:700;">↑ 이번달</span></div><div style="font-family:var(--fd);font-size:32px;color:var(--blue);">124</div><div class="dash-lbl">진행 중</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card" style="padding:24px;"><div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:16px;">최근 등록 공고</div><div id="ad-recentjobs"></div></div>
+        <div class="card" style="padding:24px;"><div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:16px;">최근 가입 프리랜서</div><div id="ad-recentexperts"></div></div>
+      </div>
+      <div class="card" style="padding:24px;"><div style="font-weight:700;font-size:14px;color:var(--black);margin-bottom:16px;">플랫폼 현황 요약</div>
+        <div class="summary-grid">
+          <div class="summary-item"><div class="summary-val">1,240명</div><div class="summary-lbl">오늘 방문자</div></div>
+          <div class="summary-item"><div class="summary-val">48건</div><div class="summary-lbl">신규 지원</div></div>
+          <div class="summary-item"><div class="summary-val">12건</div><div class="summary-lbl">계약 완료</div></div>
+          <div class="summary-item"><div class="summary-val">6건</div><div class="summary-lbl">정산 대기</div></div>
+          <div class="summary-item"><div class="summary-val">0건</div><div class="summary-lbl">민원 접수</div></div>
+          <div class="summary-item"><div class="summary-val">정상</div><div class="summary-lbl">시스템 상태</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="ad-workroom" style="display:none;">
+      <!-- 요약 카드 -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px;">
+        <div class="card dash-card"><div class="dash-icon">🏗</div><div style="font-family:var(--fd);font-size:28px;color:var(--showm);">124</div><div class="dash-lbl">전체 워크룸</div></div>
+        <div class="card dash-card"><div class="dash-icon">📝</div><div style="font-family:var(--fd);font-size:28px;color:var(--blue);">38</div><div class="dash-lbl">작업중</div></div>
+        <div class="card dash-card"><div class="dash-icon">🔍</div><div style="font-family:var(--fd);font-size:28px;color:var(--amber);">21</div><div class="dash-lbl">검토중</div></div>
+        <div class="card dash-card"><div class="dash-icon">✏️</div><div style="font-family:var(--fd);font-size:28px;color:var(--purple);">18</div><div class="dash-lbl">수정중</div></div>
+        <div class="card dash-card"><div class="dash-icon">✅</div><div style="font-family:var(--fd);font-size:28px;color:var(--green);">47</div><div class="dash-lbl">최종완료</div></div>
+      </div>
+
+      <!-- 필터 -->
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+        <input class="inp" style="width:240px;" placeholder="🔍 프로젝트·프리랜서 검색...">
+        <select class="inp" style="width:130px;"><option>전체 상태</option><option>계약완료</option><option>작업중</option><option>1차 검토</option><option>수정중</option><option>최종완료</option></select>
+        <select class="inp" style="width:130px;"><option>전체 팀</option><option>마케팅팀</option><option>콘텐츠팀</option><option>개발팀</option></select>
+        <select class="inp" style="width:130px;"><option>최신순</option><option>마감 임박순</option><option>미응답순</option></select>
+      </div>
+
+      <!-- 워크룸 목록 -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <!-- 워크룸 카드 1 -->
+        <div class="card" style="padding:20px 24px;cursor:pointer;" onclick="goPage('chat')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="avatar" style="width:44px;height:44px;font-size:15px;">KT</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--black);">쇼핑몰 백엔드 API 개발</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px;">김태민 · 백엔드 개발자 · 2025.05.01~06.30</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span class="bdg bdg-or">작업중</span>
+              <span style="font-size:11px;background:var(--red-bg);color:var(--red);padding:2px 8px;border-radius:4px;font-weight:700;">NEW 3</span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+              <span>👤 담당: 마케팅팀 홍길동</span>
+              <span>💬 메시지 12개</span>
+              <span>📎 산출물 3개</span>
+              <span>🕐 마지막 활동 2시간 전</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-g btn-sm" onclick="event.stopPropagation()">담당자 변경</button>
+              <button class="btn btn-g btn-sm" onclick="event.stopPropagation()">상태 변경</button>
+              <button class="btn btn-p btn-sm" onclick="event.stopPropagation();goPage('chat')">워크룸 열기 →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 워크룸 카드 2 -->
+        <div class="card" style="padding:20px 24px;cursor:pointer;" onclick="goPage('chat')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="avatar" style="width:44px;height:44px;font-size:15px;">JD</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--black);">SNS 자동화 파이프라인</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px;">정다은 · 마케팅 자동화 · 2025.04.28~05.28</div>
+              </div>
+            </div>
+            <span class="bdg bdg-am">1차 검토</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+              <span>👤 담당: 콘텐츠팀 이철수</span>
+              <span>💬 메시지 34개</span>
+              <span>📎 산출물 5개</span>
+              <span>🕐 마지막 활동 1일 전</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-g btn-sm" onclick="event.stopPropagation()">담당자 변경</button>
+              <button class="btn btn-g btn-sm" onclick="event.stopPropagation()">상태 변경</button>
+              <button class="btn btn-p btn-sm" onclick="event.stopPropagation();goPage('chat')">워크룸 열기 →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 워크룸 카드 3 -->
+        <div class="card" style="padding:20px 24px;cursor:pointer;opacity:.75;" onclick="goPage('chat')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="avatar" style="width:44px;height:44px;font-size:15px;">LS</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:var(--black);">모바일 앱 UI/UX 디자인</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px;">이수연 · UI/UX 디자이너 · 2025.04.01~05.15</div>
+              </div>
+            </div>
+            <span class="bdg bdg-gn">최종완료</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+              <span>👤 담당: 개발팀 박민지</span>
+              <span>💬 메시지 56개</span>
+              <span>📎 산출물 8개</span>
+              <span>🕐 완료: 2025.05.12</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-g btn-sm" onclick="event.stopPropagation()">상세 보기</button>
+              <button class="btn btn-p btn-sm" onclick="event.stopPropagation();goPage('chat')">워크룸 열기 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="ad-jobs" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <input class="inp" style="width:280px;" placeholder="🔍  공고 검색...">
+        <div style="display:flex;gap:8px;"><select class="inp" style="width:120px;"><option>전체 상태</option><option>모집중</option><option>마감</option></select><button class="btn btn-p btn-md">+ 공고 추가</button></div>
+      </div>
+      <div class="card" style="overflow:hidden;"><table class="tbl"><thead><tr><th>ID</th><th>제목</th><th>카테고리</th><th>기간</th><th>마감일</th><th>상태</th><th>액션</th></tr></thead><tbody id="ad-jobs-tbody"></tbody></table></div>
+    </div>
+
+    <div id="ad-experts" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <input class="inp" style="width:280px;" placeholder="🔍  프리랜서 검색...">
+        <select class="inp" style="width:140px;"><option>전체 상태</option><option>수주 가능</option><option>진행 중</option></select>
+      </div>
+      <div class="card" style="overflow:hidden;"><table class="tbl"><thead><tr><th>프리랜서</th><th>역할</th><th>레벨</th><th>평점</th><th>프로젝트</th><th>상태</th><th>액션</th></tr></thead><tbody id="ad-experts-tbody"></tbody></table></div>
+    </div>
+
+    <div id="ad-settle" style="display:none;">
+      <div class="settle-grid">
+        <div class="card settle-card"><div class="settle-lbl">정산 대기</div><div class="settle-val" style="color:var(--showm);">6건 · 840만원</div></div>
+        <div class="card settle-card"><div class="settle-lbl">이번달 완료</div><div class="settle-val" style="color:var(--green);">42건 · 3,840만원</div></div>
+        <div class="card settle-card"><div class="settle-lbl">전월 대비</div><div class="settle-val" style="color:var(--amber);">↑ 18% 증가</div></div>
+      </div>
+      <div class="card" style="overflow:hidden;"><table class="tbl"><thead><tr><th>정산번호</th><th>프리랜서</th><th>프로젝트</th><th>협의금액</th><th>요청일</th><th>상태</th><th>처리</th></tr></thead><tbody id="ad-settle-tbody"></tbody></table></div>
+    </div>
+  </div>
+  <div id="footer-admin"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     모달 — 지원하기
+══════════════════════════════════════ -->
+<div class="modal-bg" id="applyModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">지원서 제출</div><div class="modal-sub" id="apply-job-title"></div></div>
+      <button class="modal-close" onclick="closeApplyModal()">✕</button>
+    </div>
+    <div class="modal-notice">💬 <strong>비용은 담당자 검토 후 개별 협의</strong>로 진행됩니다. 희망 단가가 있으시면 자기소개에 자유롭게 기재해주세요.</div>
+    <div class="form-row" style="margin-bottom:14px;">
+      <div><label class="lbl">이름 <span class="req">*</span></label><input class="inp" placeholder="홍길동"></div>
+      <div><label class="lbl">연락처 <span class="req">*</span></label><input class="inp" placeholder="010-0000-0000"></div>
+    </div>
+    <div class="form-g"><label class="lbl">이메일 <span class="req">*</span></label><input class="inp" type="email" placeholder="example@email.com"></div>
+    <div class="form-g"><label class="lbl">경력</label><select class="inp"><option>1년 미만</option><option>1~3년</option><option selected>3~5년</option><option>5~10년</option><option>10년 이상</option></select></div>
+    <div class="form-g"><label class="lbl">포트폴리오 링크</label><input class="inp" type="url" placeholder="https://github.com/username"></div>
+    <div class="form-g"><label class="lbl">자기소개 <span class="req">*</span></label><textarea class="inp" placeholder="관련 경험, 유사 프로젝트 경험, 지원 이유 등을 자유롭게 작성해주세요. 희망 단가가 있으면 함께 기재해주세요. (200자 이상 권장)"></textarea></div>
+    <button class="btn btn-p btn-full" style="padding:14px;font-size:15px;" onclick="submitApply()">지원서 제출하기 →</button>
+    <div class="modal-terms">제출 시 이용약관 및 개인정보처리방침에 동의하는 것으로 간주됩니다.</div>
+  </div>
+</div>
+
+<!-- 모달 — 지원 완료 -->
+<div class="success-bg" id="successModal">
+  <div class="success-box">
+    <div class="success-icon">✅</div>
+    <div class="success-title">지원 완료!</div>
+    <div class="success-desc">지원서가 성공적으로 제출되었습니다.<br>담당자가 검토 후 <strong style="color:var(--text);">3영업일 이내</strong> 비용 협의를 위해 연락드립니다.</div>
+    <button class="btn btn-p btn-md" onclick="closeSuccess()">확인</button>
+  </div>
+</div>
+
+<!-- 모달 — 프로젝트 제안 -->
+<div class="modal-bg" id="contactModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><div class="modal-title">프로젝트 제안</div><div class="modal-sub" id="contact-expert-name"></div></div>
+      <button class="modal-close" onclick="closeContactModal()">✕</button>
+    </div>
+    <div class="modal-notice">💬 비용은 제안 내용 검토 후 프리랜서와 직접 협의하여 결정됩니다.</div>
+    <div class="form-g"><label class="lbl">프로젝트명</label><input class="inp" placeholder="프로젝트명을 입력해주세요"></div>
+    <div class="form-g"><label class="lbl">기간</label><input class="inp" placeholder="예: 2개월"></div>
+    <div class="form-g"><label class="lbl">상세 내용 및 예산 범위</label><textarea class="inp" placeholder="프로젝트 상세 내용과 예산 범위를 자유롭게 기재해주세요."></textarea></div>
+    <button class="btn btn-p btn-full" style="padding:14px;font-size:15px;" onclick="closeContactModal()">제안서 보내기 →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     회원가입 (소셜 로그인)
+══════════════════════════════════════ -->
+<div id="page-signup" class="page">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;background:linear-gradient(150deg,#fff 0%,#fff8f3 60%,#fff2ea 100%);">
+    <div style="width:100%;max-width:420px;">
+
+      <!-- 로고 -->
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="font-family:var(--fd);font-size:28px;letter-spacing:.1em;color:var(--black);margin-bottom:8px;cursor:pointer;" onclick="goPage('home')">WITH <span style="color:var(--showm);">SHOWM</span></div>
+        <p style="font-size:13px;color:var(--muted);">쇼엠이 운영하는 프리랜서 매칭 플랫폼</p>
+      </div>
+
+      <div class="card" style="padding:36px;">
+        <h2 style="font-size:20px;font-weight:700;color:var(--black);margin-bottom:6px;text-align:center;">시작하기</h2>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:28px;text-align:center;line-height:1.7;">소셜 계정으로 간편하게 가입하세요.<br>가입 후 프리랜서 등록을 완료하면 공고 지원이 가능합니다.</p>
+
+        <!-- 카카오 -->
+        <button onclick="submitSignup('kakao')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:none;border-radius:10px;background:#FEE500;color:#191919;font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-bottom:12px;transition:all .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C5.58 2 2 4.91 2 8.5c0 2.28 1.46 4.28 3.67 5.48L4.8 17.1c-.07.27.22.48.46.33l3.6-2.4c.37.04.75.07 1.14.07 4.42 0 8-2.91 8-6.5S14.42 2 10 2z" fill="#191919"/></svg>
+          카카오로 시작하기
+        </button>
+
+        <!-- 네이버 -->
+        <button onclick="submitSignup('naver')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:none;border-radius:10px;background:#03C75A;color:#fff;font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-bottom:12px;transition:all .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11.4 10.56L8.44 6H6v8h2.6V9.44L11.56 14H14V6h-2.6v4.56z" fill="white"/></svg>
+          네이버로 시작하기
+        </button>
+
+        <!-- 구글 -->
+        <button onclick="submitSignup('google')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:1.5px solid var(--border2);border-radius:10px;background:#fff;color:var(--text);font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-bottom:24px;transition:all .2s;" onmouseover="this.style.borderColor='var(--border2)';this.style.background='var(--bg2)'" onmouseout="this.style.background='#fff'">
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M19.6 10.23c0-.68-.06-1.36-.17-2H10v3.79h5.4a4.6 4.6 0 01-2 3.02v2.5h3.24c1.9-1.74 2.96-4.32 2.96-7.31z" fill="#4285F4"/><path d="M10 20c2.7 0 4.97-.9 6.63-2.46l-3.24-2.5c-.9.6-2.04.96-3.39.96-2.6 0-4.8-1.76-5.6-4.12H1.06v2.58A10 10 0 0010 20z" fill="#34A853"/><path d="M4.4 11.88A6 6 0 014.12 10c0-.65.11-1.29.28-1.88V5.54H1.06A10 10 0 000 10c0 1.61.39 3.14 1.06 4.46l3.34-2.58z" fill="#FBBC05"/><path d="M10 3.96c1.47 0 2.79.5 3.83 1.5l2.87-2.87C14.96.9 12.7 0 10 0A10 10 0 001.06 5.54l3.34 2.58C5.2 5.72 7.4 3.96 10 3.96z" fill="#EA4335"/></svg>
+          Google로 시작하기
+        </button>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+          <span style="font-size:11px;color:var(--muted2);">또는</span>
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+        </div>
+
+        <!-- 일반 회원가입 -->
+        <button onclick="goPage('signup-email')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px;border:1.5px solid var(--border2);border-radius:10px;background:transparent;color:var(--text);font-size:14px;font-weight:600;font-family:var(--fb);cursor:pointer;margin-bottom:24px;transition:all .2s;" onmouseover="this.style.borderColor='var(--showm)';this.style.color='var(--showm)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text)'">
+          ✉️ 이메일로 회원가입
+        </button>
+
+        <!-- 약관 동의 -->
+        <div style="background:var(--bg2);border-radius:8px;padding:14px 16px;margin-bottom:20px;">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:10px;">
+            <input type="checkbox" style="margin-top:2px;accent-color:var(--showm);">
+            <span style="font-size:13px;color:var(--text);font-weight:600;">전체 동의</span>
+          </label>
+          <div style="height:1px;background:var(--border);margin-bottom:10px;"></div>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:8px;">
+            <input type="checkbox" style="accent-color:var(--showm);">
+            <span style="font-size:12px;color:var(--muted);">[필수] 이용약관 동의 <span style="color:var(--showm);text-decoration:underline;">보기</span></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:8px;">
+            <input type="checkbox" style="accent-color:var(--showm);">
+            <span style="font-size:12px;color:var(--muted);">[필수] 개인정보처리방침 동의 <span style="color:var(--showm);text-decoration:underline;">보기</span></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+            <input type="checkbox" style="accent-color:var(--showm);">
+            <span style="font-size:12px;color:var(--muted);">[선택] 마케팅 정보 수신 동의</span>
+          </label>
+        </div>
+
+        <div style="text-align:center;font-size:12px;color:var(--muted);">
+          이미 계정이 있으신가요? <span style="color:var(--showm);font-weight:700;cursor:pointer;" onclick="doLogin()">로그인</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-signup"></div>
+</div>
+
+<!-- 가입 완료 → 프리랜서 등록 유도 모달 -->
+<div class="success-bg" id="signupSuccess">
+  <div class="success-box" style="max-width:440px;">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">가입 완료!</div>
+    <div class="success-desc" id="signupSuccessDesc">위드쇼엠에 오신 것을 환영합니다.<br>프리랜서 등록을 완료하면 공고 지원과<br>프로필 노출이 가능합니다.</div>
+    <button class="btn btn-p" style="width:100%;padding:14px;font-size:15px;justify-content:center;margin-bottom:10px;" onclick="closeSignupSuccess()">프리랜서 등록하기 →</button>
+    <button class="btn btn-g" style="width:100%;padding:12px;justify-content:center;" onclick="closeSignupSuccessSkip()">나중에 하기</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     전문가 등록
+══════════════════════════════════════ -->
+<div id="page-register" class="page">
+  <div style="min-height:100vh;background:linear-gradient(150deg,#fff 0%,#fff8f3 60%,#fff2ea 100%);padding:80px 24px 60px;">
+    <div style="max-width:640px;margin:0 auto;">
+
+      <!-- 로고 + 브레드크럼 -->
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="font-family:var(--fd);font-size:24px;letter-spacing:.1em;color:var(--black);margin-bottom:8px;cursor:pointer;" onclick="goPage('home')">WITH <span style="color:var(--showm);">SHOWM</span></div>
+        <p style="font-size:13px;color:var(--muted);">프리랜서 등록을 완료하면 공고 지원 및 프로필 노출이 가능합니다.</p>
+      </div>
+
+      <!-- 스텝 표시 -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:36px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">✓</div>
+          <span style="font-size:11px;color:var(--green);font-weight:600;">회원가입</span>
+        </div>
+        <div style="width:60px;height:2px;background:var(--showm);margin-bottom:18px;"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--showm);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">2</div>
+          <span style="font-size:11px;color:var(--showm);font-weight:600;">프리랜서 등록</span>
+        </div>
+        <div style="width:60px;height:2px;background:var(--border2);margin-bottom:18px;"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">3</div>
+          <span style="font-size:11px;color:var(--muted);">승인 완료</span>
+        </div>
+      </div>
+
+      <div class="card" style="padding:36px;">
+        <h2 style="font-family:var(--fd);font-size:26px;letter-spacing:.03em;color:var(--black);margin-bottom:4px;">프리랜서 프로필 등록</h2>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:28px;">등록 후 위드쇼엠 운영팀 검토를 거쳐 승인됩니다. (보통 1~2 영업일 소요)</p>
+
+        <!-- 기본 정보 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">📋 기본 정보</div>
+        <div class="form-row" style="margin-bottom:14px;">
+          <div><label class="lbl">이름 <span class="req">*</span></label><input class="inp" placeholder="홍길동"></div>
+          <div><label class="lbl">연락처 <span class="req">*</span></label><input class="inp" placeholder="010-0000-0000"></div>
+        </div>
+        <div class="form-row" style="margin-bottom:20px;">
+          <div>
+            <label class="lbl">주요 직군 <span class="req">*</span></label>
+            <select class="inp">
+              <option value="">선택해주세요</option>
+              <option>백엔드 개발</option>
+              <option>프론트엔드 개발</option>
+              <option>풀스택 개발</option>
+              <option>모바일 개발</option>
+              <option>UI/UX 디자인</option>
+              <option>AI/ML 엔지니어링</option>
+              <option>데이터 분석</option>
+              <option>마케팅 자동화</option>
+              <option>기타</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">경력 <span class="req">*</span></label>
+            <select class="inp">
+              <option>1년 미만</option>
+              <option>1~3년</option>
+              <option>3~5년</option>
+              <option>5~10년</option>
+              <option>10년 이상</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 포트폴리오 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">💼 포트폴리오</div>
+        <div class="form-g">
+          <label class="lbl">포트폴리오 링크 <span class="req">*</span></label>
+          <input class="inp" placeholder="GitHub, 노션, 개인 사이트 등 (최소 1개 필수)">
+        </div>
+        <div class="form-g">
+          <label class="lbl">추가 링크</label>
+          <input class="inp" placeholder="추가 포트폴리오 링크">
+        </div>
+
+        <!-- 기술 스택 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">⚙️ 기술 스택</div>
+        <div class="form-g">
+          <label class="lbl">주요 기술 <span class="req">*</span></label>
+          <input class="inp" placeholder="예: React, Node.js, Python (쉼표로 구분)">
+          <div style="font-size:11px;color:var(--muted2);margin-top:5px;">프리랜서 찾기 검색 필터에 활용됩니다.</div>
+        </div>
+
+        <!-- 자기소개 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">👤 자기소개</div>
+        <div class="form-g">
+          <label class="lbl">자기소개 <span class="req">*</span></label>
+          <textarea class="inp" style="min-height:120px;" placeholder="경력, 전문 분야, 작업 방식 등을 자유롭게 소개해주세요. (100자 이상 권장)"></textarea>
+        </div>
+
+        <!-- 작업 조건 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">📌 작업 조건</div>
+        <div class="form-row" style="margin-bottom:20px;">
+          <div>
+            <label class="lbl">작업 방식</label>
+            <select class="inp">
+              <option>원격</option>
+              <option>대면</option>
+              <option>혼합</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">현재 상태</label>
+            <select class="inp">
+              <option>수주 가능</option>
+              <option>부분 가능</option>
+              <option>현재 불가</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 희망 단가 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">💰 희망 단가 <span style="font-size:11px;color:var(--muted);font-weight:400;">(선택)</span></div>
+        <div class="form-row" style="margin-bottom:20px;">
+          <div>
+            <label class="lbl">단가 기준</label>
+            <select class="inp">
+              <option value="">선택해주세요</option>
+              <option>시간당 (원/h)</option>
+              <option>일당 (원/day)</option>
+              <option>월 고정 (원/month)</option>
+              <option>프로젝트 단위 (원/건)</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl">희망 금액</label>
+            <input class="inp" placeholder="예: 50,000 (숫자만 입력)">
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);background:var(--bg2);border-radius:8px;padding:10px 14px;margin-bottom:20px;line-height:1.7;">
+          💡 희망 단가는 매칭 시 참고용으로 활용되며, 실제 비용은 의뢰 확정 후 협의하여 결정됩니다.
+        </div>
+
+        <!-- 정산 방식 -->
+        <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">🧾 정산 방식 <span style="font-size:11px;color:var(--muted);font-weight:400;">(선택 — 의뢰 확정 후 상세 정보 입력)</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;">
+          <div id="reg-settle-1" onclick="selectRegSettle(1)" style="padding:14px 16px;border:2px solid var(--showm);border-radius:10px;cursor:pointer;background:var(--showm-light);">
+            <div style="font-size:13px;font-weight:700;color:var(--showm);margin-bottom:3px;">👤 개인</div>
+            <div style="font-size:11px;color:var(--muted);">3.3% 원천징수 · 프리랜서 정산</div>
+          </div>
+          <div id="reg-settle-2" onclick="selectRegSettle(2)" style="padding:14px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;">
+            <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:3px;">🏪 개인사업자</div>
+            <div style="font-size:11px;color:var(--muted);">세금계산서 발행</div>
+          </div>
+          <div id="reg-settle-3" onclick="selectRegSettle(3)" style="padding:14px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;">
+            <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:3px;">🏢 법인사업자</div>
+            <div style="font-size:11px;color:var(--muted);">세금계산서 발행</div>
+          </div>
+          <div id="reg-settle-4" onclick="selectRegSettle(4)" style="padding:14px 16px;border:2px solid var(--border);border-radius:10px;cursor:pointer;">
+            <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:3px;">🤝 기타</div>
+            <div style="font-size:11px;color:var(--muted);">별도 협의 필요</div>
+          </div>
+        </div>
+        <!-- 기타 선택 시 메모 -->
+        <div id="reg-settle-etc-note" style="display:none;background:var(--amber-bg);border:1px solid rgba(217,119,6,.2);border-radius:8px;padding:12px 14px;margin-bottom:14px;">
+          <div class="form-g" style="margin-bottom:0;">
+            <label class="lbl">협의 내용 메모</label>
+            <input class="inp" placeholder="정산 방식에 대해 협의가 필요한 내용을 간단히 적어주세요.">
+          </div>
+        </div>
+
+        <!-- 안내 박스 -->
+        <div style="background:var(--showm-light);border:1px solid rgba(242,101,34,.2);border-radius:10px;padding:14px 16px;margin-bottom:24px;font-size:12px;color:var(--showm);line-height:1.7;">
+          📋 <strong>검토 안내</strong><br>
+          등록 신청 후 위드쇼엠 운영팀이 포트폴리오를 검토합니다.<br>
+          매칭 확정 시 알림을 드리며, 이후 공고 지원 및 프로필 노출이 가능합니다.
+        </div>
+
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-g" style="flex:1;padding:14px;font-size:14px;justify-content:center;" onclick="saveTempRegister()">임시저장</button>
+          <button class="btn btn-p" style="flex:2;padding:14px;font-size:15px;justify-content:center;" onclick="submitRegister()">프리랜서 등록 신청하기 →</button>
+        </div>
+        <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--muted);">임시저장 후 나중에 이어서 작성할 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-register"></div>
+</div>
+
+<!-- 임시저장 완료 토스트 -->
+<div id="tempSaveToast" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(17,17,17,.88);color:#fff;padding:10px 24px;border-radius:20px;font-size:13px;z-index:400;backdrop-filter:blur(10px);">
+  ✅ 임시저장 완료
+</div>
+
+<!-- 프리랜서 등록 완료 모달 -->
+<div class="success-bg" id="registerSuccess">
+  <div class="success-box">
+    <div class="success-icon">📋</div>
+    <div class="success-title">신청 완료!</div>
+    <div class="success-desc">프리랜서 등록 신청이 완료되었습니다.<br>운영팀 검토 후 <strong style="color:var(--text);">1~2 영업일 이내</strong><br>승인 결과를 안내해드립니다.</div>
+    <button class="btn btn-p btn-md" onclick="closeRegisterSuccess()">공고 둘러보기 →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     정산 정보 입력
+══════════════════════════════════════ -->
+<div id="page-settle-info" class="page">
+  <div style="min-height:100vh;background:linear-gradient(150deg,#fff 0%,#fff8f3 60%,#fff2ea 100%);padding:80px 24px 60px;">
+    <div style="max-width:600px;margin:0 auto;">
+
+      <!-- 로고 + 스텝 -->
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-family:var(--fd);font-size:24px;letter-spacing:.1em;color:var(--black);margin-bottom:8px;cursor:pointer;" onclick="goPage('home')">WITH <span style="color:var(--showm);">SHOWM</span></div>
+      </div>
+
+      <!-- 진행 스텝 -->
+      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:36px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--green-bg);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--green);">✓</div>
+          <span style="font-size:11px;color:var(--green);font-weight:600;"><b style="color:inherit">매칭 확정</b></span>
+        </div>
+        <div style="width:60px;height:2px;background:var(--showm);margin-bottom:18px;"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--showm);border:2px solid var(--showm);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;">2</div>
+          <span style="font-size:11px;color:var(--showm);font-weight:600;">정산 정보</span>
+        </div>
+        <div style="width:60px;height:2px;background:var(--border2);margin-bottom:18px;"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);">3</div>
+          <span style="font-size:11px;color:var(--muted);">카카오 전자서명</span>
+        </div>
+        <div style="width:60px;height:2px;background:var(--border2);margin-bottom:18px;"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);">4</div>
+          <span style="font-size:11px;color:var(--muted);">워크룸 시작</span>
+        </div>
+      </div>
+
+      <div class="card" style="padding:36px;">
+        <h2 style="font-family:var(--fd);font-size:26px;letter-spacing:.03em;color:var(--black);margin-bottom:4px;">정산 정보 입력</h2>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:24px;line-height:1.7;">프로젝트 완료 후 외주비 지급을 위한 정보를 입력해주세요.<br>입력하신 정보는 암호화되어 안전하게 보관됩니다.</p>
+
+        <!-- 구분 선택 -->
+        <div class="form-g">
+          <label class="lbl">구분 <span class="req">*</span></label>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;">
+            <div id="settle-type-personal" onclick="selectSettleType('personal')" style="padding:14px;border:2px solid var(--showm);border-radius:10px;text-align:center;cursor:pointer;background:var(--showm-light);">
+              <div style="font-size:20px;margin-bottom:6px;">👤</div>
+              <div style="font-size:13px;font-weight:700;color:var(--showm);">개인</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">원천징수</div>
+            </div>
+            <div id="settle-type-sole" onclick="selectSettleType('sole')" style="padding:14px;border:2px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;">
+              <div style="font-size:20px;margin-bottom:6px;">🏪</div>
+              <div style="font-size:13px;font-weight:700;color:var(--black);">개인사업자</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">세금계산서 발행</div>
+            </div>
+            <div id="settle-type-corp" onclick="selectSettleType('corp')" style="padding:14px;border:2px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;">
+              <div style="font-size:20px;margin-bottom:6px;">🏢</div>
+              <div style="font-size:13px;font-weight:700;color:var(--black);">법인사업자</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">세금계산서 발행</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 개인: 계좌 + 주민번호 -->
+        <div id="settle-personal" style="margin-top:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">💳 계좌 정보</div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div>
+              <label class="lbl">은행명 <span class="req">*</span></label>
+              <select class="inp">
+                <option value="">선택해주세요</option>
+                <option>국민은행</option><option>신한은행</option><option>우리은행</option>
+                <option>하나은행</option><option>기업은행</option><option>농협은행</option>
+                <option>카카오뱅크</option><option>토스뱅크</option><option>케이뱅크</option>
+                <option>기타</option>
+              </select>
+            </div>
+            <div>
+              <label class="lbl">예금주 <span class="req">*</span></label>
+              <input class="inp" placeholder="예금주명">
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="lbl">계좌번호 <span class="req">*</span></label>
+            <input class="inp" placeholder="- 없이 숫자만 입력">
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--black);margin-top:20px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">🪪 원천징수 정보</div>
+          <div class="form-g">
+            <label class="lbl">주민등록번호 앞 7자리 <span class="req">*</span></label>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input class="inp" placeholder="생년월일 6자리" maxlength="6" style="width:140px;">
+              <span style="color:var(--muted);">-</span>
+              <input class="inp" placeholder="●" maxlength="1" style="width:60px;text-align:center;letter-spacing:.2em;">
+              <span style="font-size:12px;color:var(--muted2);">●●●●●●</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted2);margin-top:5px;">3.3% 원천징수 소득세 신고를 위해 필요합니다.</div>
+          </div>
+        </div>
+
+        <!-- 개인사업자: 사업자 정보 + 계좌 -->
+        <div id="settle-sole" style="display:none;margin-top:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">📋 사업자 정보</div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div>
+              <label class="lbl">상호명 <span class="req">*</span></label>
+              <input class="inp" placeholder="사업자등록증 상의 상호명">
+            </div>
+            <div>
+              <label class="lbl">대표자명 <span class="req">*</span></label>
+              <input class="inp" placeholder="대표자 성명">
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="lbl">사업자등록번호 <span class="req">*</span></label>
+            <input class="inp" placeholder="000-00-00000">
+          </div>
+          <div class="form-g">
+            <label class="lbl">업태 / 종목</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <input class="inp" placeholder="업태 (예: 서비스업)">
+              <input class="inp" placeholder="종목 (예: 소프트웨어 개발)">
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="lbl">세금계산서 수신 이메일 <span class="req">*</span></label>
+            <input class="inp" type="email" placeholder="계산서를 받을 이메일 주소">
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--black);margin-top:20px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">💳 계좌 정보</div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div>
+              <label class="lbl">은행명 <span class="req">*</span></label>
+              <select class="inp">
+                <option value="">선택해주세요</option>
+                <option>국민은행</option><option>신한은행</option><option>우리은행</option>
+                <option>하나은행</option><option>기업은행</option><option>농협은행</option>
+                <option>카카오뱅크</option><option>토스뱅크</option><option>기타</option>
+              </select>
+            </div>
+            <div>
+              <label class="lbl">예금주(상호명) <span class="req">*</span></label>
+              <input class="inp" placeholder="예금주명">
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="lbl">계좌번호 <span class="req">*</span></label>
+            <input class="inp" placeholder="- 없이 숫자만 입력">
+          </div>
+        </div>
+
+        <!-- 법인사업자: 사업자 정보 + 계좌 -->
+        <div id="settle-corp" style="display:none;margin-top:8px;">
+          <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">📋 법인 정보</div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div>
+              <label class="lbl">법인명 <span class="req">*</span></label>
+              <input class="inp" placeholder="법인명 (사업자등록증 기준)">
+            </div>
+            <div>
+              <label class="lbl">대표자명 <span class="req">*</span></label>
+              <input class="inp" placeholder="대표자 성명">
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div>
+              <label class="lbl">사업자등록번호 <span class="req">*</span></label>
+              <input class="inp" placeholder="000-00-00000">
+            </div>
+            <div>
+              <label class="lbl">법인등록번호</label>
+              <input class="inp" placeholder="000000-0000000">
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="lbl">담당자명 <span class="req">*</span></label>
+            <input class="inp" placeholder="세금계산서 담당자명">
+          </div>
+          <div class="form-g">
+            <label class="lbl">세금계산서 수신 이메일 <span class="req">*</span></label>
+            <input class="inp" type="email" placeholder="계산서를 받을 이메일 주소">
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--black);margin-top:20px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">💳 계좌 정보</div>
+          <div class="form-row" style="margin-bottom:14px;">
+            <div>
+              <label class="lbl">은행명 <span class="req">*</span></label>
+              <select class="inp">
+                <option value="">선택해주세요</option>
+                <option>국민은행</option><option>신한은행</option><option>우리은행</option>
+                <option>하나은행</option><option>기업은행</option><option>농협은행</option>
+                <option>기타</option>
+              </select>
+            </div>
+            <div>
+              <label class="lbl">예금주(법인명) <span class="req">*</span></label>
+              <input class="inp" placeholder="예금주명">
+            </div>
+          </div>
+          <div class="form-g">
+            <label class="lbl">계좌번호 <span class="req">*</span></label>
+            <input class="inp" placeholder="- 없이 숫자만 입력">
+          </div>
+        </div>
+
+        <!-- 보안 안내 -->
+        <div style="background:var(--blue-bg);border:1px solid rgba(37,99,235,.15);border-radius:10px;padding:14px 16px;margin-top:20px;margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px;">🔒 개인정보 보호 안내</div>
+          <div style="font-size:12px;color:var(--text);line-height:1.8;">입력하신 정보는 AES-256 암호화하여 저장되며 정산 목적 외에는 사용되지 않습니다.<br>개인정보처리방침에 따라 계약 종료 후 5년간 보관 후 파기됩니다.</div>
+        </div>
+
+        <!-- 카카오 전자서명 안내 -->
+        <div style="background:#FFFDE7;border:1px solid #FEE500;border-radius:10px;padding:14px 16px;margin-bottom:24px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <div style="background:#FEE500;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;color:#3A1D1D;">카카오 전자서명</div>
+            <span style="font-size:12px;font-weight:700;color:#3A1D1D;">다음 단계 안내</span>
+          </div>
+          <div style="font-size:12px;color:#555;line-height:1.9;">
+            정산 정보 저장 완료 후 아래 순서로 계약이 진행됩니다.<br>
+            <b style="color:#3A1D1D;">① 담당자</b>가 카카오 전자서명 서비스에서 계약서를 작성하고 서명 요청을 발송합니다.<br>
+            <b style="color:#3A1D1D;">② 프리랜서</b>가 카카오톡 알림을 수신하고 본인인증 후 전자서명을 진행합니다.<br>
+            <b style="color:#3A1D1D;">③ 서명 완료</b> 시 계약서 PDF가 양측에 자동 발송되고 워크룸이 시작됩니다.
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:#888;">전자서명법 제3조 적용 — 본인인증 기반으로 법적 효력이 보장됩니다.</div>
+        </div>
+
+        <button class="btn btn-p btn-full" style="padding:14px;font-size:15px;" onclick="submitSettleInfo()">저장하고 계약 진행하기 →</button>
+        <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);">
+          <span style="cursor:pointer;text-decoration:underline;" onclick="goPage('mypage')">나중에 입력하기</span> (계약 전까지 반드시 완료해야 합니다)
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-settle-info"></div>
+</div>
+
+<!-- 정산 정보 저장 완료 모달 -->
+<div class="success-bg" id="settleInfoSuccess">
+  <div class="success-box">
+    <div class="success-icon">✅</div>
+    <div class="success-title">정보 저장 완료!</div>
+    <div class="success-desc">정산 정보가 안전하게 저장되었습니다.<br>다음 단계로 카카오 전자서명을 통해 계약을 진행해주세요.</div>
+    <button class="btn btn-p btn-md" onclick="closeSettleInfoSuccess()">카카오 전자서명으로 계약하기 →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     공고 등록
+══════════════════════════════════════ -->
+<div id="page-jobadd" class="page">
+  <div class="wrap" style="padding-top:96px;padding-bottom:60px;max-width:800px;">
+    <div class="breadcrumb">
+      <span class="bc-link" onclick="goPage('admin')">관리자</span><span>›</span>
+      <span class="bc-cur">공고 등록</span>
+    </div>
+    <div style="margin-bottom:32px;">
+      <div class="sec-label">POST A JOB</div>
+      <h1 style="font-family:var(--fd);font-size:40px;letter-spacing:.04em;color:var(--black);">공고 등록</h1>
+    </div>
+
+    <div class="card" style="padding:36px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">📋 기본 정보</div>
+      <div class="form-g">
+        <label class="lbl">공고 제목 <span class="req">*</span></label>
+        <input class="inp" placeholder="예: 쇼핑몰 백엔드 API 개발">
+      </div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div>
+          <label class="lbl">카테고리 <span class="req">*</span></label>
+          <select class="inp">
+            <option value="">선택해주세요</option>
+            <option>BACKEND</option><option>FRONTEND</option><option>FULLSTACK</option>
+            <option>AI</option><option>DESIGN</option><option>DATA</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">작업 방식 <span class="req">*</span></label>
+          <select class="inp"><option>원격</option><option>대면</option><option>혼합</option></select>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div>
+          <label class="lbl">계약 기간 <span class="req">*</span></label>
+          <input class="inp" placeholder="예: 2개월, 6주">
+        </div>
+        <div>
+          <label class="lbl">마감일 <span class="req">*</span></label>
+          <input class="inp" type="date">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:36px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">📝 업무 내용</div>
+      <div class="form-g">
+        <label class="lbl">업무 설명 <span class="req">*</span></label>
+        <div id="task-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+          <div style="display:flex;gap:8px;align-items:center;"><input class="inp" placeholder="업무 항목을 입력하세요" style="flex:1;"><button style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);cursor:pointer;font-size:13px;">−</button></div>
+          <div style="display:flex;gap:8px;align-items:center;"><input class="inp" placeholder="업무 항목을 입력하세요" style="flex:1;"><button style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);cursor:pointer;font-size:13px;">−</button></div>
+        </div>
+        <button onclick="addTaskItem()" style="width:100%;padding:9px;border:1.5px dashed var(--border2);border-radius:8px;background:transparent;font-size:13px;color:var(--muted);cursor:pointer;font-family:var(--fb);">+ 항목 추가</button>
+      </div>
+    </div>
+
+    <div class="card" style="padding:36px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">⚙️ 기술 스택 및 요구사항</div>
+      <div class="form-g">
+        <label class="lbl">요구 기술 스택 <span class="req">*</span></label>
+        <input class="inp" placeholder="예: Node.js, Python, AWS (쉼표로 구분)">
+        <div style="font-size:11px;color:var(--muted2);margin-top:5px;">입력된 태그가 공고 카드에 표시됩니다.</div>
+      </div>
+      <div class="form-g">
+        <label class="lbl">우대 조건</label>
+        <textarea class="inp" placeholder="우대하는 경험이나 스킬을 입력하세요. (선택)"></textarea>
+      </div>
+    </div>
+
+    <div class="card" style="padding:36px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">💬 소통 및 진행 방식</div>
+      <div class="form-g">
+        <label class="lbl">기본 소통 채널</label>
+        <select class="inp" onchange="toggleEtcInput(this,'comm-etc')">
+          <option>슬랙 (Slack)</option><option>카카오톡</option><option>이메일</option><option>기타</option>
+        </select>
+        <input class="inp" id="comm-etc" placeholder="소통 채널을 직접 입력해주세요" style="display:none;margin-top:8px;">
+      </div>
+      <div class="form-g">
+        <label class="lbl">업무 관리 도구</label>
+        <select class="inp" onchange="toggleEtcInput(this,'tool-etc')">
+          <option>노션 (Notion)</option><option>지라 (Jira)</option><option>트렐로</option><option>기타</option>
+        </select>
+        <input class="inp" id="tool-etc" placeholder="업무 관리 도구를 직접 입력해주세요" style="display:none;margin-top:8px;">
+      </div>
+      <div class="form-g">
+        <label class="lbl">보고 주기</label>
+        <select class="inp"><option>주 1회</option><option>주 2회</option><option>격주</option><option>월 1회</option><option>필요 시</option></select>
+      </div>
+    </div>
+
+    <div class="card" style="padding:36px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);">👤 담당자 배정</div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div>
+          <label class="lbl">담당 팀</label>
+          <select class="inp"><option>마케팅팀</option><option>콘텐츠팀</option><option>개발팀</option></select>
+        </div>
+        <div>
+          <label class="lbl">담당자</label>
+          <select class="inp"><option>홍길동</option><option>이철수</option><option>박민지</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:flex-end;">
+      <button class="btn btn-g btn-lg" onclick="goPage('admin')">취소</button>
+      <button class="btn btn-o btn-lg">임시저장</button>
+      <button class="btn btn-p btn-lg" onclick="alert('공고가 등록되었습니다!')">공고 등록하기 →</button>
+    </div>
+  </div>
+  <div id="footer-jobadd"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     로그인
+══════════════════════════════════════ -->
+<div id="page-login" class="page">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 24px;background:linear-gradient(150deg,#fff 0%,#fff8f3 60%,#fff2ea 100%);">
+    <div style="width:100%;max-width:420px;">
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="font-family:var(--fd);font-size:28px;letter-spacing:.1em;color:var(--black);margin-bottom:8px;cursor:pointer;" onclick="goPage('home')">WITH <span style="color:var(--showm);">SHOWM</span></div>
+        <p style="font-size:13px;color:var(--muted);">쇼엠이 운영하는 프리랜서 매칭 플랫폼</p>
+      </div>
+
+      <div class="card" style="padding:36px;">
+        <h2 style="font-size:20px;font-weight:700;color:var(--black);margin-bottom:6px;text-align:center;">로그인</h2>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:28px;text-align:center;">소셜 계정으로 간편하게 로그인하세요.</p>
+
+        <!-- 소셜 로그인 -->
+        <button onclick="doLoginSocial('kakao')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:none;border-radius:10px;background:#FEE500;color:#191919;font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-bottom:12px;transition:all .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C5.58 2 2 4.91 2 8.5c0 2.28 1.46 4.28 3.67 5.48L4.8 17.1c-.07.27.22.48.46.33l3.6-2.4c.37.04.75.07 1.14.07 4.42 0 8-2.91 8-6.5S14.42 2 10 2z" fill="#191919"/></svg>
+          카카오로 로그인
+        </button>
+        <button onclick="doLoginSocial('naver')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:none;border-radius:10px;background:#03C75A;color:#fff;font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-bottom:12px;transition:all .2s;" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11.4 10.56L8.44 6H6v8h2.6V9.44L11.56 14H14V6h-2.6v4.56z" fill="white"/></svg>
+          네이버로 로그인
+        </button>
+        <button onclick="doLoginSocial('google')" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border:1.5px solid var(--border2);border-radius:10px;background:#fff;color:var(--text);font-size:15px;font-weight:700;font-family:var(--fb);cursor:pointer;margin-bottom:24px;transition:all .2s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='#fff'">
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M19.6 10.23c0-.68-.06-1.36-.17-2H10v3.79h5.4a4.6 4.6 0 01-2 3.02v2.5h3.24c1.9-1.74 2.96-4.32 2.96-7.31z" fill="#4285F4"/><path d="M10 20c2.7 0 4.97-.9 6.63-2.46l-3.24-2.5c-.9.6-2.04.96-3.39.96-2.6 0-4.8-1.76-5.6-4.12H1.06v2.58A10 10 0 0010 20z" fill="#34A853"/><path d="M4.4 11.88A6 6 0 014.12 10c0-.65.11-1.29.28-1.88V5.54H1.06A10 10 0 000 10c0 1.61.39 3.14 1.06 4.46l3.34-2.58z" fill="#FBBC05"/><path d="M10 3.96c1.47 0 2.79.5 3.83 1.5l2.87-2.87C14.96.9 12.7 0 10 0A10 10 0 001.06 5.54l3.34 2.58C5.2 5.72 7.4 3.96 10 3.96z" fill="#EA4335"/></svg>
+          Google로 로그인
+        </button>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+          <span style="font-size:11px;color:var(--muted2);">또는 이메일로 로그인</span>
+          <div style="flex:1;height:1px;background:var(--border);"></div>
+        </div>
+
+        <div class="form-g">
+          <label class="lbl">이메일</label>
+          <input class="inp" type="email" placeholder="example@email.com">
+        </div>
+        <div class="form-g">
+          <label class="lbl">비밀번호</label>
+          <input class="inp" type="password" placeholder="비밀번호를 입력해주세요">
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:20px;">
+          <span style="font-size:12px;color:var(--muted);cursor:pointer;" onmouseover="this.style.color='var(--showm)'" onmouseout="this.style.color='var(--muted)'">비밀번호를 잊으셨나요?</span>
+        </div>
+
+        <button class="btn btn-p btn-full" style="padding:14px;font-size:15px;" onclick="doLoginSocial('email')">로그인</button>
+
+        <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--muted);">
+          계정이 없으신가요? <span style="color:var(--showm);font-weight:700;cursor:pointer;" onclick="goPage('signup')">회원가입</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-login"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     워크룸 (프로젝트 협업)
+══════════════════════════════════════ -->
+<div id="page-chat" class="page">
+  <div style="max-width:1200px;margin:0 auto;padding:80px 32px 32px;">
+
+    <!-- 헤더 -->
+    <div style="margin-bottom:20px;">
+      <div style="font-size:11px;color:var(--muted);font-family:var(--fm);letter-spacing:.08em;margin-bottom:6px;">SHOWM WORKROOM</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <h1 style="font-size:22px;font-weight:700;color:var(--black);margin-bottom:4px;" id="wr-project-title">쇼핑몰 백엔드 API 개발</h1>
+          <div style="display:flex;gap:12px;font-size:12px;color:var(--muted);">
+            <span>📅 2025.05.01 ~ 2025.06.30</span>
+            <span>👤 프리랜서: 김태민</span>
+            <span>🏢 담당: 쇼엠 마케팅팀</span>
+          </div>
+        </div>
+        <!-- 프로젝트 선택 -->
+        <select class="inp" style="width:220px;font-size:13px;" onchange="switchProject(this.value)">
+          <option value="0">쇼핑몰 백엔드 API 개발</option>
+          <option value="1">SNS 자동화 파이프라인</option>
+          <option value="2">모바일 앱 UI/UX 디자인</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- A. 프로젝트 상태 바 -->
+    <div class="card" style="padding:20px 28px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;margin-bottom:16px;font-family:var(--fm);">PROJECT STATUS</div>
+      <div style="display:flex;align-items:center;" id="wr-status-bar">
+        <!-- JS로 렌더링 -->
+      </div>
+    </div>
+
+    <!-- B+C 그리드 -->
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start;">
+
+      <!-- B. 업무 소통창 -->
+      <div class="card" style="display:flex;flex-direction:column;overflow:hidden;">
+
+        <!-- 소통창 헤더 -->
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:13px;font-weight:700;color:var(--black);">업무 소통</div>
+          <div style="display:flex;gap:6px;">
+            <span class="bdg bdg-gn" id="wr-status-badge">작업중</span>
+            <button class="btn btn-g" style="padding:5px 12px;font-size:11px;" onclick="changeStatus()">상태 변경</button>
+          </div>
+        </div>
+
+        <!-- 메시지 목록 -->
+        <div id="wr-messages" style="padding:20px;display:flex;flex-direction:column;gap:14px;min-height:420px;max-height:480px;overflow-y:auto;background:var(--bg2);">
+          <!-- JS로 렌더링 -->
+        </div>
+
+        <!-- 입력창 -->
+        <div style="padding:16px 20px;border-top:1px solid var(--border);background:var(--card);">
+          <div style="display:flex;gap:10px;align-items:flex-end;">
+            <div style="flex:1;">
+              <textarea id="wr-input" placeholder="의견 및 링크 공유..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-family:var(--fb);color:var(--text);background:var(--bg2);resize:none;outline:none;line-height:1.5;transition:border-color .2s;" rows="2" onfocus="this.style.borderColor='var(--showm)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendWrMsg();}"></textarea>
+              <div style="font-size:11px;color:var(--muted2);margin-top:5px;">💡 파일은 Google Drive · Notion · GitHub 링크로 첨부해주세요. Enter로 전송, Shift+Enter로 줄바꿈.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <button onclick="addLinkMsg()" class="btn btn-g" style="padding:9px 14px;font-size:12px;white-space:nowrap;">🔗 링크</button>
+              <button onclick="sendWrMsg()" class="btn btn-p" style="padding:9px 14px;font-size:12px;">전송</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. 퀵 박스 -->
+      <div style="display:flex;flex-direction:column;gap:14px;">
+
+        <!-- 산출물 링크 -->
+        <div class="card" style="padding:18px 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:12px;display:flex;align-items:center;gap:6px;">📎 퀵 링크 / 산출물</div>
+          <div style="display:flex;flex-direction:column;gap:8px;" id="wr-quicklinks">
+            <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--showm)'" onmouseout="this.style.borderColor='var(--border)'">
+              <span style="font-size:14px;">📄</span><span style="font-size:12px;font-weight:600;color:var(--black);flex:1;">API 명세서</span><span style="font-size:10px;color:var(--showm);font-family:var(--fm);">Notion</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--showm)'" onmouseout="this.style.borderColor='var(--border)'">
+              <span style="font-size:14px;">📊</span><span style="font-size:12px;font-weight:600;color:var(--black);flex:1;">요구사항 정의서</span><span style="font-size:10px;color:var(--showm);font-family:var(--fm);">Drive</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--showm)'" onmouseout="this.style.borderColor='var(--border)'">
+              <span style="font-size:14px;">💻</span><span style="font-size:12px;font-weight:600;color:var(--black);flex:1;">GitHub 레포</span><span style="font-size:10px;color:var(--showm);font-family:var(--fm);">GitHub</span>
+            </div>
+            <button onclick="addQuickLink()" style="width:100%;padding:8px;border:1.5px dashed var(--border2);border-radius:8px;background:transparent;font-size:12px;color:var(--muted);cursor:pointer;font-family:var(--fb);transition:all .2s;" onmouseover="this.style.borderColor='var(--showm)';this.style.color='var(--showm)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">+ 링크 추가</button>
+          </div>
+        </div>
+
+        <!-- 담당자 정보 -->
+        <div class="card" style="padding:18px 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:12px;">👤 담당자 정보</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+              <div class="avatar" style="width:36px;height:36px;font-size:13px;">KT</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--black);">김태민</div>
+                <div style="font-size:11px;color:var(--muted);">백엔드 개발자 · 시니어</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;justify-content:space-between;"><span>이메일</span><span style="color:var(--text);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b607f6a6e664b6e666a626725686466">[email&#160;protected]</a></span></div>
+              <div style="display:flex;justify-content:space-between;"><span>연락처</span><span style="color:var(--text);">010-1234-5678</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>응답시간</span><span style="color:var(--green);">평균 2시간</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 계약 정보 -->
+        <div class="card" style="padding:18px 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--black);margin-bottom:12px;">📋 계약 정보</div>
+          <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;"><span>계약 방식</span><span style="color:var(--text);font-weight:600;">카카오 전자서명</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>정산 방식</span><span style="color:var(--text);">완료 후 10영업일</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>비용</span><span style="color:var(--showm);font-weight:700;">협의 완료</span></div>
+          </div>
+          <button class="btn btn-g" style="width:100%;justify-content:center;padding:9px;font-size:12px;margin-top:12px;">📄 카카오 서명 계약서 보기</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div id="footer-chat"></div>
+</div>>
+
+<!-- 푸터 템플릿 -->
+<template id="footerTpl">
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">WITH <span>SHOWM</span></div>
+          <div class="footer-desc">쇼엠이 운영하는 검증된 프리랜서 매칭 플랫폼.<br>수수료 0%, 신뢰 기반의 전문가 연결.</div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-group"><h4>서비스</h4><a>공고 목록</a><a>프리랜서 찾기</a><a>진행 방식</a><a>수수료 안내</a></div>
+          <div class="footer-group"><h4>회사</h4><a>쇼엠 소개</a><a href="https://showm.kr" target="_blank">쇼엠 홈페이지</a><a>채용</a></div>
+          <div class="footer-group"><h4>지원</h4><a>이용약관</a><a>개인정보처리방침</a><a>문의하기</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 WithShowm. Powered by ShowM Co., Ltd.</div>
+        <div class="footer-info">사업자등록번호: 318-87-00348 | 대표: 박무진 | 인천광역시 연수구 송도동 7-50 갯벌타워 6층</div>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+// ── 데이터 ──
+const CAT_COLOR = { BACKEND:'bdg-bl', FRONTEND:'bdg-pu', AI:'bdg-am', FULLSTACK:'bdg-gn', DESIGN:'bdg-rd', DATA:'bdg-gy' };
+
+const JOBS = [
+  { id:1, title:'쇼핑몰 백엔드 API 개발', category:'BACKEND', tags:['Node.js','Express','PostgreSQL','AWS'], period:'2개월', type:'원격', deadline:'D-3', hot:true,
+    tasks:['RESTful API 설계 및 개발 (상품, 주문, 결제, 회원 관련)','데이터베이스 스키마 설계 및 쿼리 최적화','JWT 기반 인증/인가 시스템 구현','서버 배포 및 환경 설정','API 명세 문서화','코드 리뷰 및 단위 테스트 작성'] },
+  { id:2, title:'반응형 랜딩페이지 퍼블리싱', category:'FRONTEND', tags:['HTML/CSS','JavaScript','React'], period:'3주', type:'원격', deadline:'D-7', hot:false,
+    tasks:['반응형 웹 퍼블리싱 (모바일/태블릿/데스크탑)','크로스 브라우저 호환성 확보','애니메이션 및 인터랙션 구현','SEO 최적화 마크업'] },
+  { id:3, title:'SNS 콘텐츠 자동화 파이프라인', category:'AI', tags:['Python','OpenAI','Make','Zapier'], period:'1개월', type:'원격', deadline:'D-12', hot:true,
+    tasks:['GPT 기반 콘텐츠 자동 생성 파이프라인 구축','Make/Zapier 연동 자동화 워크플로우 설계','SNS 채널별 포맷 최적화','성과 리포트 자동화'] },
+  { id:4, title:'사내 인사관리 웹 프론트 개발', category:'FULLSTACK', tags:['React','TypeScript','Supabase'], period:'3개월', type:'원격', deadline:'D-20', hot:false,
+    tasks:['인사 데이터 관리 대시보드 개발','근태·급여·조직도 모듈 구현','권한별 접근 제어 시스템','Supabase 기반 백엔드 연동'] },
+  { id:5, title:'모바일 앱 UI/UX 디자인', category:'DESIGN', tags:['Figma','Prototyping','iOS','Android'], period:'6주', type:'원격', deadline:'D-5', hot:true,
+    tasks:['사용자 리서치 및 IA 설계','와이어프레임 및 프로토타입 제작','iOS/Android 디자인 가이드라인 준수','디자인 시스템 구축'] },
+  { id:6, title:'데이터 분석 대시보드 개발', category:'DATA', tags:['Python','Tableau','SQL','Airflow'], period:'2개월', type:'혼합', deadline:'D-15', hot:false,
+    tasks:['데이터 파이프라인 설계 및 구축','Tableau 대시보드 개발','SQL 쿼리 최적화','Airflow DAG 작성 및 스케줄링'] },
+];
+
+const EXPERTS = [
+  { id:1, name:'김태민', role:'백엔드 개발자', level:'시니어', skills:['Node.js','Python','AWS','PostgreSQL'], rating:4.9, reviews:28, projects:41, bio:'7년차 백엔드 개발자. 이커머스 및 핀테크 도메인 경험 다수. 다양한 규모의 프로젝트 경험을 바탕으로 클라이언트의 요구사항을 정확히 파악하고 최적의 솔루션을 제공합니다.', available:true, avatar:'KT' },
+  { id:2, name:'이수연', role:'UI/UX 디자이너', level:'미드', skills:['Figma','Sketch','Prototyping','Adobe XD'], rating:4.8, reviews:19, projects:27, bio:'5년차 프로덕트 디자이너. SaaS 및 모바일 앱 전문.', available:true, avatar:'LS' },
+  { id:3, name:'박준혁', role:'풀스택 개발자', level:'시니어', skills:['React','TypeScript','Next.js','Supabase'], rating:5.0, reviews:34, projects:52, bio:'8년차 풀스택 개발자. 스타트업 CTO 경력 보유.', available:false, avatar:'PJ' },
+  { id:4, name:'최민지', role:'AI/ML 엔지니어', level:'시니어', skills:['Python','TensorFlow','LLM','RAG'], rating:4.7, reviews:12, projects:18, bio:'AI 엔지니어. GPT 기반 자동화 파이프라인 구축 전문.', available:true, avatar:'CM' },
+  { id:5, name:'정다은', role:'마케팅 자동화', level:'미드', skills:['Make','Zapier','GA4','Python'], rating:4.9, reviews:22, projects:35, bio:'마케팅 자동화 전문가. SNS·광고·CRM 연동 경험 풍부.', available:true, avatar:'JD' },
+  { id:6, name:'한승우', role:'모바일 개발자', level:'시니어', skills:['React Native','Flutter','iOS','Android'], rating:4.6, reviews:15, projects:23, bio:'6년차 모바일 개발자. 앱 출시 20+ 경력.', available:true, avatar:'HS' },
+];
+
+let currentPage = 'home';
+let currentJob = JOBS[0];
+let currentExpert = EXPERTS[0];
+let currentCat = '전체';
+let loggedIn = false;
+let userType = 'freelancer'; // 'admin' | 'staff' | 'freelancer'
+
+// ── NAV 메뉴 권한 제어 ──
+function updateNavByRole() {
+  const expertsNav = document.getElementById('nav-experts');
+  const mobileExpertsNav = document.getElementById('mobile-nav-experts');
+  const adminNav = document.getElementById('nav-admin');
+  const mobileAdminNav = document.getElementById('mobile-nav-admin');
+
+  // 프리랜서 찾기: admin·staff만 노출
+  const showExperts = loggedIn && (userType === 'admin' || userType === 'staff');
+  if (expertsNav) expertsNav.style.display = showExperts ? '' : 'none';
+  if (mobileExpertsNav) mobileExpertsNav.style.display = showExperts ? '' : 'none';
+
+  // 관리자: admin만 노출
+  const showAdmin = loggedIn && userType === 'admin';
+  if (adminNav) adminNav.style.display = showAdmin ? '' : 'none';
+  if (mobileAdminNav) mobileAdminNav.style.display = showAdmin ? '' : 'none';
+}
+
+// ── 햄버거 메뉴 ──
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = menu.classList.toggle('open');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+  // 햄버거 → X 애니메이션
+  const spans = btn.querySelectorAll('span');
+  if (isOpen) {
+    spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+    spans[1].style.opacity = '0';
+    spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+  } else {
+    spans[0].style.transform = '';
+    spans[1].style.opacity = '';
+    spans[2].style.transform = '';
+  }
+}
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  menu.classList.remove('open');
+  document.body.style.overflow = '';
+  btn.querySelectorAll('span').forEach(s => { s.style.transform=''; s.style.opacity=''; });
+}
+
+// ── 섹션 스크롤 ──
+function scrollToSection(id) {
+  // 홈 페이지가 아니면 먼저 이동
+  if (currentPage !== 'home') {
+    goPage('home');
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  } else {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── 페이지 이동 ──
+function goPage(p) {
+  closeMobileMenu();
+
+  // 모든 페이지 숨기기
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+
+  // 해당 페이지 표시
+  const target = document.getElementById('page-' + p);
+  if (!target) { console.warn('페이지 없음: page-' + p); return; }
+  target.classList.add('active');
+
+  // 퀵 네비 on 클래스 — onclick 값으로 정확히 매칭
+  document.querySelectorAll('.qn-btn').forEach(b => {
+    b.classList.remove('on');
+    const fn = b.getAttribute('onclick') || '';
+    if (fn.includes(`'${p}'`)) b.classList.add('on');
+  });
+
+  currentPage = p;
+  window.scrollTo(0, 0);
+
+  // 페이지별 렌더링
+  if (p === 'home')          { renderHomeJobs(); renderFooters(); setTimeout(adjustMobilePadding, 50); return; }
+  if (p === 'signup')        { renderFooters(); return; }
+  if (p === 'chat')          { setTimeout(initWorkroom, 50); }
+  if (p === 'jobs')          renderAllJobs();
+  if (p === 'experts')       renderExperts(EXPERTS);
+  if (p === 'jobdetail')     renderJobDetail(currentJob);
+  if (p === 'expertprofile') renderExpertProfile(currentExpert);
+  if (p === 'mypage')        renderSavedJobs();
+  if (p === 'admin')         renderAdmin();
+
+  renderFooters();
+  setTimeout(adjustMobilePadding, 50);
+}
+
+// ── 아바타 ──
+function avatarEl(code, size) {
+  return `<div class="avatar" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.34)}px;">${code}</div>`;
+}
+
+// ── 예산 뱃지 ──
+function budgetBdg() {
+  return `<div class="budget-bdg">💬 비용 협의</div>`;
+}
+
+// ── 공고 카드 HTML ──
+function jobCardHTML(job) {
+  const tags = job.tags.slice(0,3).map(t => `<span class="tag">${t}</span>`).join('');
+  return `
+    <div class="card card-hv job-card" onclick="openJob(${job.id})">
+      <div class="job-card-top">
+        <div class="job-bdgs">
+          <span class="bdg ${CAT_COLOR[job.category]||'bdg-gy'}">${job.category}</span>
+          ${job.hot ? '<span class="bdg bdg-or">🔥 HOT</span>' : ''}
+        </div>
+        <span class="bdg bdg-rd">${job.deadline}</span>
+      </div>
+      <div class="job-title">${job.title}</div>
+      <div class="job-tags">${tags}</div>
+      <div class="job-footer">
+        <div class="job-meta"><span>📅 ${job.period}</span><span>🖥 ${job.type}</span></div>
+        ${budgetBdg()}
+      </div>
+    </div>`;
+}
+
+function openJob(id) {
+  currentJob = JOBS.find(j => j.id === id);
+  goPage('jobdetail');
+}
+
+function openExpert(id) {
+  currentExpert = EXPERTS.find(e => e.id === id);
+  goPage('expertprofile');
+}
+
+// ── 렌더링 ──
+function renderHomeJobs() {
+  document.getElementById('homeJobGrid').innerHTML = JOBS.slice(0,3).map(jobCardHTML).join('');
+}
+
+function renderAllJobs() {
+  const search = document.getElementById('jobSearch')?.value || '';
+  const filtered = JOBS.filter(j =>
+    (currentCat === '전체' || j.category === currentCat) &&
+    (!search || j.title.includes(search))
+  );
+  document.getElementById('allJobGrid').innerHTML = filtered.length
+    ? filtered.map(jobCardHTML).join('')
+    : '<div style="grid-column:1/-1;text-align:center;padding:80px 0;color:var(--muted);">검색 결과가 없습니다.</div>';
+}
+
+function renderExperts(list) {
+  document.getElementById('expertGrid').innerHTML = list.map(e => `
+    <div class="card card-hv exp-card" onclick="openExpert(${e.id})">
+      <div class="exp-card-top">
+        ${avatarEl(e.avatar, 52)}
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div><div class="exp-name">${e.name}</div><div class="exp-role">${e.role}</div></div>
+            <span class="bdg ${e.available?'bdg-gn':'bdg-gy'}">${e.available?'수주 가능':'진행 중'}</span>
+          </div>
+        </div>
+      </div>
+      <div class="exp-bio">${e.bio}</div>
+      <div class="exp-skills">${e.skills.slice(0,3).map(s=>`<span class="tag">${s}</span>`).join('')}${e.skills.length>3?`<span class="tag">+${e.skills.length-3}</span>`:''}</div>
+      <div class="exp-footer">
+        <div class="exp-stats"><span>⭐ <strong style="color:var(--text);">${e.rating}</strong></span><span>✅ <strong style="color:var(--text);">${e.projects}</strong>건</span></div>
+        ${budgetBdg()}
+      </div>
+    </div>`).join('');
+}
+
+function renderJobDetail(job) {
+  document.getElementById('jd-bc').textContent = job.title;
+  document.getElementById('jd-title').textContent = job.title;
+  document.getElementById('jd-period').textContent = job.period;
+  document.getElementById('jd-type').textContent = job.type;
+  document.getElementById('apply-job-title').textContent = job.title;
+  document.getElementById('jd-badges').innerHTML = `
+    <span class="bdg ${CAT_COLOR[job.category]||'bdg-gy'}">${job.category}</span>
+    <span class="bdg bdg-rd">마감 ${job.deadline}</span>
+    <span class="bdg bdg-gn">모집 중</span>
+    ${job.hot?'<span class="bdg bdg-or">🔥 HOT</span>':''}`;
+  document.getElementById('jd-meta').innerHTML = `
+    <div class="meta-item">📅 기간 <strong style="color:var(--text);font-weight:600;">${job.period}</strong></div>
+    <div class="meta-item">🖥 방식 <strong style="color:var(--text);font-weight:600;">${job.type}</strong></div>
+    <div class="meta-item">📄 계약 <strong style="color:var(--text);font-weight:600;">프리랜서 계약</strong></div>
+    <div class="meta-item">💬 비용 <strong style="color:var(--showm);font-weight:600;">지원 후 협의</strong></div>`;
+  document.getElementById('jd-tasks').innerHTML = job.tasks.map(t =>
+    `<li class="task-item"><span class="task-dot"></span>${t}</li>`).join('');
+  document.getElementById('jd-tags').innerHTML = job.tags.concat(['Git','Swagger','Docker']).map(t =>
+    `<span class="tag">${t}</span>`).join('');
+  document.getElementById('jd-similar').innerHTML = JOBS.filter(j=>j.id!==job.id).slice(0,3).map(j => `
+    <div class="similar-item" onclick="openJob(${j.id})">
+      <span class="bdg ${CAT_COLOR[j.category]||'bdg-gy'}" style="font-size:9px;align-self:flex-start;margin-top:2px;">${j.category}</span>
+      <div class="similar-info"><div class="similar-title">${j.title}</div><div class="similar-meta">${j.period} · ${j.type}</div></div>
+      ${budgetBdg()}
+    </div>`).join('');
+}
+
+function renderExpertProfile(expert) {
+  document.getElementById('ep-bc').textContent = expert.name;
+  document.getElementById('ep-name').textContent = expert.name;
+  document.getElementById('ep-role').textContent = `${expert.role} · ${expert.level}`;
+  document.getElementById('ep-bio').innerHTML = expert.bio + '<br><br>다양한 규모의 프로젝트 경험을 바탕으로 클라이언트의 요구사항을 정확히 파악하고 최적의 솔루션을 제공합니다. 명확한 소통과 일정 준수를 최우선으로 합니다.';
+  document.getElementById('ep-avatar').textContent = expert.avatar;
+  document.getElementById('contact-expert-name').textContent = `${expert.name} · ${expert.role}`;
+  document.getElementById('ep-badges').innerHTML = `
+    <span class="bdg ${expert.available?'bdg-gn':'bdg-gy'}">${expert.available?'🟢 수주 가능':'⏸ 진행 중'}</span>
+    <span class="bdg bdg-or">인증 프리랜서</span>`;
+  document.getElementById('ep-stats').innerHTML = [
+    ['⭐','평점',expert.rating],['📝','리뷰',expert.reviews+'건'],['✅','프로젝트',expert.projects+'개'],['🏆','레벨',expert.level]
+  ].map(([ico,l,v]) => `
+    <div class="prof-stat">
+      <div class="prof-stat-icon">${ico}</div>
+      <div class="prof-stat-val">${v}</div>
+      <div class="prof-stat-lbl">${l}</div>
+    </div>`).join('');
+  document.getElementById('ep-skills').innerHTML = expert.skills.map(s=>`<span class="tag">${s}</span>`).join('');
+}
+
+function renderSavedJobs() {
+  document.getElementById('savedJobGrid').innerHTML = JOBS.slice(0,2).map(jobCardHTML).join('');
+}
+
+function renderAdmin() {
+  document.getElementById('ad-recentjobs').innerHTML = JOBS.slice(0,4).map(j => `
+    <div class="list-item">
+      <div><div style="font-size:13px;font-weight:500;color:var(--black);">${j.title}</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${j.period} · ${j.type}</div></div>
+      <span class="bdg ${CAT_COLOR[j.category]}">${j.category}</span>
+    </div>`).join('');
+  document.getElementById('ad-recentexperts').innerHTML = EXPERTS.slice(0,4).map(e => `
+    <div class="list-item">
+      <div style="display:flex;gap:10px;align-items:center;">${avatarEl(e.avatar,32)}<div><div style="font-size:13px;font-weight:500;color:var(--black);">${e.name}</div><div style="font-size:11px;color:var(--muted);">${e.role}</div></div></div>
+      <span class="bdg ${e.available?'bdg-gn':'bdg-gy'}">${e.available?'활성':'진행중'}</span>
+    </div>`).join('');
+  document.getElementById('ad-jobs-tbody').innerHTML = JOBS.map((j,i) => `
+    <tr>
+      <td class="tbl-id">#${j.id}</td>
+      <td class="tbl-main">${j.title}</td>
+      <td><span class="bdg ${CAT_COLOR[j.category]}">${j.category}</span></td>
+      <td class="tbl-muted">${j.period}</td>
+      <td style="font-size:12px;color:var(--amber);">${j.deadline}</td>
+      <td><span class="bdg bdg-gn">모집중</span></td>
+      <td><div class="tbl-actions"><button class="btn btn-g btn-sm">수정</button><button class="btn-del">삭제</button></div></td>
+    </tr>`).join('');
+  document.getElementById('ad-experts-tbody').innerHTML = EXPERTS.map(e => `
+    <tr>
+      <td><div style="display:flex;gap:10px;align-items:center;">${avatarEl(e.avatar,32)}<span class="tbl-main">${e.name}</span></div></td>
+      <td class="tbl-muted">${e.role}</td>
+      <td><span class="bdg bdg-or">${e.level}</span></td>
+      <td style="font-size:13px;color:var(--amber);">⭐ ${e.rating}</td>
+      <td class="tbl-muted">${e.projects}개</td>
+      <td><span class="bdg ${e.available?'bdg-gn':'bdg-gy'}">${e.available?'활성':'진행중'}</span></td>
+      <td><div class="tbl-actions">
+        <button class="btn btn-g btn-sm" title="프리랜서 공개 프로필 미리보기 및 레벨 지정" onclick="openExpert(${e.id})">프로필 보기</button>
+        <button class="btn btn-g btn-sm" style="color:var(--amber);" onclick="alert('레벨을 지정합니다.')">레벨 지정</button>
+        <button class="btn btn-g btn-sm" style="color:var(--red);">정지</button>
+      </div></td>
+    </tr>`).join('');
+  document.getElementById('ad-settle-tbody').innerHTML = EXPERTS.slice(0,4).map((e,i) => `
+    <tr>
+      <td class="tbl-id">#SET-${100+i}</td>
+      <td class="tbl-main">${e.name}</td>
+      <td class="tbl-muted">${JOBS[i]?.title.slice(0,16)}...</td>
+      <td><span class="bdg bdg-or">협의 완료</span></td>
+      <td style="font-size:12px;color:var(--muted);">2025.05.0${i+1}</td>
+      <td><span class="bdg ${i===1?'bdg-gn':'bdg-am'}">${i===1?'완료':'대기'}</span></td>
+      <td>${i!==1?'<button class="btn btn-p btn-sm">정산 처리</button>':''}</td>
+    </tr>`).join('');
+}
+
+function renderFooters() {
+  const tpl = document.getElementById('footerTpl').innerHTML;
+  ['home','jobs','jobdetail','experts','expertprofile','mypage','signup','register','login','chat','jobadd','settle-info','admin'].forEach(p => {
+    const el = document.getElementById('footer-'+p);
+    if (el) el.innerHTML = tpl;
+  });
+}
+
+// ── 필터 ──
+function filterJobs(v) { renderAllJobs(); }
+function setCat(btn, cat) {
+  document.querySelectorAll('.filter-cat').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  currentCat = cat;
+  renderAllJobs();
+}
+function filterExperts(v) {
+  const filtered = EXPERTS.filter(e =>
+    !v || e.name.includes(v) || e.role.includes(v) || e.skills.some(s => s.toLowerCase().includes(v.toLowerCase()))
+  );
+  renderExperts(filtered);
+}
+
+// ── 탭 ──
+function myTab(btn, target) {
+  document.querySelectorAll('#page-mypage .tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['my-overview','my-workroom','my-applied','my-team','my-myprofile','my-saved','my-profile'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === target ? '' : 'none';
+  });
+}
+function adminTab(btn, target) {
+  document.querySelectorAll('#page-admin .tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['ad-dashboard','ad-workroom','ad-jobs','ad-experts','ad-settle'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === target ? '' : 'none';
+  });
+}
+
+// ── 마이페이지 계정 유형 전환 ──
+function switchMyPageType(type) {
+  userType = type;
+  loggedIn = true;
+  updateNavByRole();
+  ['admin','staff','freelancer'].forEach(t => {
+    const btn = document.getElementById('type-'+t);
+    if (!btn) return;
+    btn.style.borderColor = t === type ? 'var(--showm)' : '';
+    btn.style.color = t === type ? 'var(--showm)' : '';
+  });
+  const teamTab = document.querySelector('.my-team-tab');
+  const flTab   = document.querySelector('.my-freelancer-tab');
+  const badges  = document.querySelectorAll('#page-mypage .my-head .bdg');
+  if (type === 'admin') {
+    if (teamTab) teamTab.style.display = '';
+    if (flTab)   flTab.style.display   = 'none';
+    if (badges[0]) badges[0].textContent = '팀 계정';
+    if (badges[1]) badges[1].textContent = '마케팅팀';
+    document.querySelector('#page-mypage h1').textContent = '홍길동';
+    document.querySelector('#page-mypage .my-head h1 + div').textContent = '마케팅팀 · 쇼엠 · 가입일 2024.09.01';
+  } else if (type === 'staff') {
+    if (teamTab) teamTab.style.display = 'none';
+    if (flTab)   flTab.style.display   = 'none';
+    if (badges[0]) badges[0].textContent = '팀 계정';
+    if (badges[1]) badges[1].textContent = '콘텐츠팀';
+    document.querySelector('#page-mypage h1').textContent = '이철수';
+    document.querySelector('#page-mypage .my-head h1 + div').textContent = '콘텐츠팀 · 쇼엠 · 가입일 2024.11.01';
+  } else {
+    if (teamTab) teamTab.style.display = 'none';
+    if (flTab)   flTab.style.display   = '';
+    if (badges[0]) badges[0].textContent = '프리랜서';
+    if (badges[1]) badges[1].textContent = '백엔드 개발';
+    document.querySelector('#page-mypage h1').textContent = '김태민';
+    document.querySelector('#page-mypage .my-head h1 + div').textContent = '백엔드 개발자 · 가입일 2024.10.15';
+  }
+  // 프리랜서 등록 정보 섹션 분기
+  const regSection = document.getElementById('my-freelancer-reg-section');
+  if (regSection) regSection.style.display = type === 'freelancer' ? '' : 'none';
+
+  // 첫 탭으로 초기화
+  const firstTab = document.querySelector('#page-mypage .tabs .tab');
+  if (firstTab) {
+    document.querySelectorAll('#page-mypage .tab').forEach(b => b.classList.remove('on'));
+    firstTab.classList.add('on');
+    ['my-overview','my-workroom','my-applied','my-team','my-myprofile','my-saved','my-profile'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = id === 'my-overview' ? '' : 'none';
+    });
+  }
+}
+
+// ── 모달 ──
+function openApplyModal() {
+  if (!loggedIn) {
+    if (confirm('공고 지원은 로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?')) goPage('login');
+    return;
+  }
+  document.getElementById('applyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeApplyModal() { document.getElementById('applyModal').classList.remove('open'); document.body.style.overflow=''; }
+function submitApply() { closeApplyModal(); document.getElementById('successModal').classList.add('open'); }
+function closeSuccess() { document.getElementById('successModal').classList.remove('open'); document.body.style.overflow=''; }
+function openContactModal() { document.getElementById('contactModal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeContactModal() { document.getElementById('contactModal').classList.remove('open'); document.body.style.overflow=''; }
+
+// 모달 배경 클릭 닫기
+['applyModal','contactModal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) { this.classList.remove('open'); document.body.style.overflow=''; }
+  });
+});
+
+// ── 회원가입 ──
+function submitSignup(provider) {
+  document.getElementById('signupSuccess').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSignupSuccess() {
+  document.getElementById('signupSuccess').classList.remove('open');
+  document.body.style.overflow = '';
+  goPage('register');
+}
+function closeSignupSuccessSkip() {
+  document.getElementById('signupSuccess').classList.remove('open');
+  document.body.style.overflow = '';
+  goPage('jobs');
+}
+
+// ── 정산 정보 ──
+let settleType = 'personal';
+function selectSettleType(type) {
+  settleType = type;
+  ['personal','sole','corp'].forEach(t => {
+    const btn = document.getElementById('settle-type-'+t);
+    const content = document.getElementById('settle-'+t);
+    if (!btn) return;
+    const isOn = t === type;
+    btn.style.border = isOn ? '2px solid var(--showm)' : '2px solid var(--border)';
+    btn.style.background = isOn ? 'var(--showm-light)' : '';
+    btn.querySelector('div:nth-child(2)').style.color = isOn ? 'var(--showm)' : 'var(--black)';
+    if (content) content.style.display = isOn ? '' : 'none';
+  });
+}
+function submitSettleInfo() {
+  document.getElementById('settleInfoSuccess').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSettleInfoSuccess() {
+  document.getElementById('settleInfoSuccess').classList.remove('open');
+  document.body.style.overflow = '';
+  goPage('chat');
+}
+
+// ── 프리랜서 등록 — 정산 방식 선택 ──
+let regSettleType = 1;
+function selectRegSettle(n) {
+  regSettleType = n;
+  [1,2,3,4].forEach(i => {
+    const el = document.getElementById('reg-settle-'+i);
+    if (!el) return;
+    const on = i === n;
+    el.style.border = on ? '2px solid var(--showm)' : '2px solid var(--border)';
+    el.style.background = on ? 'var(--showm-light)' : '';
+    el.querySelector('div').style.color = on ? 'var(--showm)' : 'var(--black)';
+  });
+  const etcNote = document.getElementById('reg-settle-etc-note');
+  if (etcNote) etcNote.style.display = n === 4 ? '' : 'none';
+}
+
+// ── 임시저장 ──
+function saveTempRegister() {
+  const toast = document.getElementById('tempSaveToast');
+  if (!toast) return;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 2000);
+}
+
+// ── 프리랜서 등록 ──
+function submitRegister() {
+  document.getElementById('registerSuccess').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeRegisterSuccess() {
+  document.getElementById('registerSuccess').classList.remove('open');
+  document.body.style.overflow = '';
+  goPage('jobs');
+}
+
+// ── 로그인 ──
+function doLoginSocial(provider) {
+  loggedIn = true;
+  updateNavByRole();
+  document.getElementById('navActions').innerHTML = `
+    <button class="btn btn-g btn-md" onclick="goPage('mypage')">마이페이지</button>
+    <button class="btn btn-g btn-md" onclick="goPage('chat')" style="position:relative;">
+      💬 메시지 <span style="position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:var(--red);border-radius:50%;"></span>
+    </button>
+    <button class="btn btn-g btn-md" onclick="doLogin()">로그아웃</button>`;
+  goPage('home');
+}
+
+// ── 기타 직접 입력 토글 ──
+function toggleEtcInput(select, inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.style.display = select.value === '기타' ? '' : 'none';
+  if (select.value === '기타') input.focus();
+}
+
+// ── 워크룸 ──
+const WR_STATUSES = ['계약완료','작업중','1차 검토','수정중','최종완료'];
+const WR_STATUS_COLORS = ['bdg-bl','bdg-or','bdg-am','bdg-pu','bdg-gn'];
+const WR_PROJECTS = [
+  { title:'쇼핑몰 백엔드 API 개발', expert:'KT', expertName:'김태민', role:'백엔드 개발자', period:'2025.05.01 ~ 2025.06.30', statusIdx:1 },
+  { title:'SNS 자동화 파이프라인', expert:'JD', expertName:'정다은', role:'마케팅 자동화', period:'2025.04.28 ~ 2025.05.28', statusIdx:2 },
+  { title:'모바일 앱 UI/UX 디자인', expert:'LS', expertName:'이수연', role:'UI/UX 디자이너', period:'2025.04.01 ~ 2025.05.15', statusIdx:4 },
+];
+let wrCurrentProject = 0;
+let wrCurrentStatus = 1;
+
+const WR_INIT_MESSAGES = [
+  { type:'system', text:'카카오 전자서명이 완료되어 프로젝트가 시작되었습니다.', time:'2025.05.01 09:00' },
+  { type:'expert', avatar:'KT', name:'김태민', text:'안녕하세요! 쇼핑몰 백엔드 API 개발 담당 김태민입니다. 잘 부탁드립니다 😊', time:'09:15' },
+  { type:'staff', name:'쇼엠 담당자', text:'반갑습니다! 요구사항 정의서를 먼저 공유드릴게요.', time:'09:22' },
+  { type:'staff', name:'쇼엠 담당자', text:'🔗 notion.so/project-requirements', time:'09:23', isLink:true },
+  { type:'system', text:'쇼엠 담당자가 상태를 \'작업중\'으로 변경했습니다.', time:'2025.05.02 10:00' },
+  { type:'expert', avatar:'KT', name:'김태민', text:'요구사항 확인했습니다. API 명세서 작성 후 공유드리겠습니다.', time:'10:31' },
+  { type:'expert', avatar:'KT', name:'김태민', text:'🔗 github.com/ktaem/shopping-api', time:'11:05', isLink:true },
+  { type:'staff', name:'쇼엠 담당자', text:'감사합니다! 검토 후 피드백 드리겠습니다 👍', time:'11:20' },
+];
+let wrMessages = [...WR_INIT_MESSAGES];
+
+function renderWrStatusBar() {
+  const bar = document.getElementById('wr-status-bar');
+  if (!bar) return;
+  bar.innerHTML = WR_STATUSES.map((s, i) => {
+    const isDone = i < wrCurrentStatus;
+    const isCurrent = i === wrCurrentStatus;
+    const color = isCurrent ? 'var(--showm)' : isDone ? 'var(--green)' : 'var(--border2)';
+    const textColor = isCurrent ? 'var(--showm)' : isDone ? 'var(--green)' : 'var(--muted)';
+    const bg = isCurrent ? 'var(--showm-light)' : isDone ? 'var(--green-bg)' : 'var(--bg2)';
+    return `
+      <div style="display:flex;align-items:center;flex:1;">
+        <div onclick="setStatus(${i})" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;padding:8px 4px;border-radius:10px;transition:background .15s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
+          <div style="width:40px;height:40px;border-radius:50%;background:${bg};border:2px solid ${color};display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;">
+            ${isDone ? '✓' : isCurrent ? '⬡' : '○'}
+          </div>
+          <span style="font-size:12px;font-weight:${isCurrent?'700':'500'};color:${textColor};white-space:nowrap;">${s}</span>
+        </div>
+        ${i < WR_STATUSES.length-1 ? `<div style="height:2px;width:100%;background:${isDone?'var(--green)':'var(--border)'};margin-bottom:20px;flex-shrink:0;max-width:40px;"></div>` : ''}
+      </div>`;
+  }).join('');
+  // 배지 업데이트
+  const badge = document.getElementById('wr-status-badge');
+  if (badge) {
+    badge.textContent = WR_STATUSES[wrCurrentStatus];
+    badge.className = 'bdg ' + WR_STATUS_COLORS[wrCurrentStatus];
+  }
+}
+
+function renderWrMessages() {
+  const el = document.getElementById('wr-messages');
+  if (!el) return;
+  el.innerHTML = wrMessages.map(m => {
+    if (m.type === 'system') return `
+      <div style="text-align:center;">
+        <span style="font-size:11px;color:var(--muted);background:var(--border);padding:5px 14px;border-radius:20px;display:inline-block;">
+          🔔 ${m.text} <span style="opacity:.6;margin-left:4px;">${m.time}</span>
+        </span>
+      </div>`;
+    const isStaff = m.type === 'staff';
+    const bubbleBg = isStaff ? 'var(--showm)' : 'var(--card)';
+    const bubbleColor = isStaff ? '#fff' : 'var(--text)';
+    const bubbleBorder = isStaff ? 'none' : '1px solid var(--border)';
+    const radius = isStaff ? '14px 14px 2px 14px' : '14px 14px 14px 2px';
+    const linkStyle = isStaff
+      ? 'background:rgba(255,255,255,.2);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;display:inline-block;margin-top:4px;'
+      : 'background:var(--showm-light);color:var(--showm);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;display:inline-block;margin-top:4px;';
+    const content = m.isLink
+      ? `<span style="${linkStyle}">🔗 ${m.text.replace('🔗 ','')}</span>`
+      : m.text;
+    if (isStaff) return `
+      <div style="display:flex;flex-direction:row-reverse;gap:10px;align-items:flex-end;">
+        <div style="max-width:70%;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-align:right;">${m.name}</div>
+          <div style="background:${bubbleBg};border:${bubbleBorder};padding:10px 14px;border-radius:${radius};font-size:13px;color:${bubbleColor};line-height:1.6;">${content}</div>
+          <div style="font-size:10px;color:var(--muted2);margin-top:4px;text-align:right;">${m.time} ✓✓</div>
+        </div>
+      </div>`;
+    return `
+      <div style="display:flex;gap:10px;align-items:flex-end;">
+        <div class="avatar" style="width:32px;height:32px;font-size:11px;flex-shrink:0;">${m.avatar}</div>
+        <div style="max-width:70%;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${m.name}</div>
+          <div style="background:${bubbleBg};border:${bubbleBorder};padding:10px 14px;border-radius:${radius};font-size:13px;color:${bubbleColor};line-height:1.6;">${content}</div>
+          <div style="display:flex;gap:6px;margin-top:6px;align-items:center;">
+            <div style="font-size:10px;color:var(--muted2);">${m.time}</div>
+            <button onclick="addFeedback(this)" style="font-size:10px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-family:var(--fb);">피드백 달기</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStatus(idx) {
+  const prev = WR_STATUSES[wrCurrentStatus];
+  wrCurrentStatus = idx;
+  wrMessages.push({ type:'system', text:`쇼엠 담당자가 상태를 '${WR_STATUSES[idx]}'으로 변경했습니다.`, time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) });
+  renderWrStatusBar();
+  renderWrMessages();
+}
+
+function changeStatus() {
+  const next = (wrCurrentStatus + 1) % WR_STATUSES.length;
+  setStatus(next);
+}
+
+function switchProject(idx) {
+  wrCurrentProject = parseInt(idx);
+  const p = WR_PROJECTS[wrCurrentProject];
+  document.getElementById('wr-project-title').textContent = p.title;
+  wrCurrentStatus = p.statusIdx;
+  wrMessages = [...WR_INIT_MESSAGES];
+  renderWrStatusBar();
+  renderWrMessages();
+}
+
+function sendWrMsg() {
+  const input = document.getElementById('wr-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const now = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  const isLink = text.startsWith('http') || text.includes('.com') || text.includes('.io') || text.includes('notion') || text.includes('github') || text.includes('drive');
+  wrMessages.push({ type:'staff', name:'쇼엠 담당자', text: isLink ? '🔗 '+text : text, time:now, isLink });
+  input.value = '';
+  renderWrMessages();
+}
+
+function addLinkMsg() {
+  const url = prompt('공유할 링크를 입력하세요 (Notion, GitHub, Drive 등)');
+  if (!url) return;
+  const now = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  wrMessages.push({ type:'staff', name:'쇼엠 담당자', text:'🔗 '+url, time:now, isLink:true });
+  renderWrMessages();
+}
+
+function addFeedback(btn) {
+  const fb = prompt('피드백을 입력해주세요:');
+  if (!fb) return;
+  const now = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  wrMessages.push({ type:'staff', name:'쇼엠 담당자', text:'💬 피드백: '+fb, time:now });
+  btn.textContent = '피드백 완료 ✓';
+  btn.style.color = 'var(--green)';
+  btn.style.borderColor = 'var(--green)';
+  btn.disabled = true;
+  renderWrMessages();
+}
+
+function addQuickLink() {
+  const name = prompt('링크 이름을 입력하세요:');
+  if (!name) return;
+  const url = prompt('링크 URL을 입력하세요:');
+  if (!url) return;
+  const type = url.includes('notion') ? 'Notion' : url.includes('github') ? 'GitHub' : url.includes('drive') ? 'Drive' : 'Link';
+  const icon = url.includes('github') ? '💻' : url.includes('notion') ? '📄' : url.includes('drive') ? '📊' : '🔗';
+  const container = document.getElementById('wr-quicklinks');
+  const addBtn = container.querySelector('button');
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .2s;';
+  div.innerHTML = `<span style="font-size:14px;">${icon}</span><span style="font-size:12px;font-weight:600;color:var(--black);flex:1;">${name}</span><span style="font-size:10px;color:var(--showm);font-family:var(--fm);">${type}</span>`;
+  container.insertBefore(div, addBtn);
+}
+
+// 워크룸 초기화 (페이지 이동 시 호출)
+function initWorkroom() {
+  wrCurrentStatus = WR_PROJECTS[wrCurrentProject].statusIdx;
+  wrMessages = [...WR_INIT_MESSAGES];
+  renderWrStatusBar();
+  renderWrMessages();
+}
+function doLogin() {
+  if (loggedIn) {
+    // 로그아웃
+    loggedIn = false;
+    document.getElementById('navActions').innerHTML = `
+      <button class="btn btn-g btn-md" onclick="goPage('login')">로그인</button>
+      <button class="btn btn-p btn-md" onclick="goPage('signup')">회원가입</button>`;
+  } else {
+    goPage('login');
+  }
+}
+
+// ── 스크롤 등장 애니메이션 ──
+function initReveal() {
+  const els = document.querySelectorAll('.reveal-section');
+  if (!els.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+// ── 모바일 인라인 스타일 섹션 패딩 조정 ──
+function adjustMobilePadding() {
+  if (window.innerWidth > 768) return;
+  // 배경색 있는 섹션들 (인라인 style로 padding:80px 0 또는 padding:80px 48px)
+  document.querySelectorAll('[style]').forEach(el => {
+    const s = el.getAttribute('style') || '';
+    if (s.includes('padding:80px 0')) {
+      el.style.padding = '56px 20px';
+    } else if (s.includes('padding:80px 48px')) {
+      el.style.padding = '56px 20px';
+    } else if (s.includes('padding-top:96px') || s.includes('padding-top: 96px')) {
+      el.style.paddingTop = '80px';
+      el.style.paddingLeft = '20px';
+      el.style.paddingRight = '20px';
+    }
+    // 섹션 헤드 텍�스트 가운데 정렬 → 좌측
+    if (s.includes('text-align:center') || s.includes('text-align: center')) {
+      if (!el.classList.contains('cta-inner') && !el.classList.contains('cta-box')) {
+        el.style.textAlign = 'left';
+      }
+    }
+  });
+}
+window.addEventListener('resize', adjustMobilePadding);
+
+// ── 초기화 ──
+renderHomeJobs();
+renderFooters();
+adjustMobilePadding();
+setTimeout(initReveal, 300);
+</script>
+
+<div class="quick-nav">
+  <button class="qn-btn on" onclick="goPage('home')">홈</button>
+  <button class="qn-btn" onclick="goPage('jobs')">공고 목록</button>
+  <button class="qn-btn" onclick="goPage('jobdetail')">공고 상세</button>
+  <button class="qn-btn" onclick="goPage('experts')">프리랜서 찾기</button>
+  <button class="qn-btn" onclick="goPage('expertprofile')">프리랜서 프로필</button>
+  <button class="qn-btn" onclick="goPage('mypage')">마이페이지</button>
+  <button class="qn-btn" onclick="goPage('settle-info')">정산 정보</button>
+  <button class="qn-btn" onclick="goPage('jobadd')">공고 등록</button>
+  <button class="qn-btn" onclick="goPage('chat')">채팅</button>
+  <button class="qn-btn" onclick="goPage('login')">로그인</button>
+  <button class="qn-btn" onclick="goPage('signup')">회원가입</button>
+  <button class="qn-btn" onclick="goPage('register')">프리랜서 등록</button>
+  <button class="qn-btn" onclick="goPage('admin')">관리자</button>
+</div
+</body>
+</html>
